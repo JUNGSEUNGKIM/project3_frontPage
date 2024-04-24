@@ -62,7 +62,7 @@ function Header(props) {
                         <a href="/recommend">FESTIVAL</a>
                       </li>
                       <li>
-                        <a href="/boarder">PERSONALIZED</a>
+                        <a href="/personalized">PERSONALIZED</a>
                       </li>
                       <li>
                         <a href="/boarder">BOARD</a>

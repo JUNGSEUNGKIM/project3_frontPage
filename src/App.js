@@ -13,6 +13,7 @@ import SignUp from "./routes/signUp"
 import RecommendPage from "./routes/recommendPage";
 import PJmain from "./routes/pj_main";
 import Create from "./routes/create";
+import Personalized from "./routes/personalized";
 
 
 import axios from "axios";
@@ -74,6 +75,7 @@ function App() {
               <Route path={"/signup"} element={<SignUp/>}/>
               <Route path={"/recommend"} element={<RecommendPage imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId}/>}/>
               <Route path={"/create"} element={<Create imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId}/>}/>
+              <Route path={"/personalized"} element={<Personalized imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId}/>}/>
           </Routes>
           <ChatBotPage/>
 
