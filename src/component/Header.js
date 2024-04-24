@@ -1,7 +1,23 @@
 import React, {useState} from "react";
+import axios from "axios";
 
-function Header() {
+function Header(props) {
   let [toggleButton, setToggleButton] = useState(false);
+  // console.log("여기야??::::",props.isLoggedIn)
+  // console.log("여기야??::::",props.loginId)
+
+  function logoutSession(){
+    // console.log(props.serverURL+'/logout')
+    axios.get(props.serverURL+'/logout')
+        .then(res => {
+          // console.log(res)
+          if(res.status===200){
+            alert("로그아웃 되었습니다.")
+          }
+        })
+  }
+
+
   return (
 
       <div className="menubar">
@@ -43,17 +59,27 @@ function Header() {
                         </a>
                       </li>
                       <li>
-                        <a href="/second">FESTIVAL</a>
+                        <a href="/recommend">FESTIVAL</a>
                       </li>
                       <li>
-                        <a href="/border">PERSONALIZED</a>
+                        <a href="/boarder">PERSONALIZED</a>
                       </li>
                       <li>
-                        <a href="/#resume">BOARD</a>
+                        <a href="/boarder">BOARD</a>
                       </li>
-                      <li>
-                        <a href="/#service">MY ACCOUNT</a>
-                      </li>
+                        {
+                          props.isLoggedIn ? (
+                              <React.Fragment>
+                                  <li><a onClick={()=>{
+                                    logoutSession();
+                                    props.setIsLoggedIn(false);
+                                    props.setLoginId('')
+                                  }}>LOGOUT</a></li>
+                                  <li><a>{props.loginId} 님</a></li>
+                              </React.Fragment>
+                              ):(
+                              <li><a href="/login">LOGIN</a></li>)
+                        }
                       {/*<li>*/}
                       {/*  <a href="/#blog">Blog</a>*/}
                       {/*</li>*/}

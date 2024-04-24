@@ -1822,7 +1822,7 @@ section:nth-of-type(2) {
   background-color: white;
   margin-top: 50px;
   position: relative;
-  background: url(../img/clients.jpg) 50% 0 no-repeat fixed;
+
   background-size: cover;
 }
 .testimonial:after {
@@ -2264,7 +2264,7 @@ blockquote {
   margin-bottom: 0px;
 }
 .copyright-details {
-  background-color: #FFFF9F;
+  background-color: #f1efe9;
   padding-top: 27px;
 }
 .copyright h3 {

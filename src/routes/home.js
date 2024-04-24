@@ -1,9 +1,38 @@
 import {useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-
+import axios from "axios"
 
 
 function Home(props) {
+
+    const [formData, setFormData] = useState({
+        id: '',
+        password: ''
+
+    });
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+        // console.log(formData)
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Axios를 사용하여 POST 요청 보내기
+        console.log(formData)
+        axios.post('http://localhost:3000/login', formData)
+            .then(response => {
+                console.log('데이터 전송 성공:', response);
+                // 성공적으로 데이터를 전송한 후 할 일을 여기에 작성
+            })
+            .catch(error => {
+                console.error('데이터 전송 실패:', error);
+                // 오류 처리를 여기에 작성
+            });
+    };
     const weatherIcons = {
 
         '01d': 'clear-sky-day.png',
@@ -26,33 +55,54 @@ function Home(props) {
         '50n': 'mist.png'
     };
 
+    const locKorea=[
+        {loc:'서울',lat:37.566330,lon:126.978451},{loc:'경기',lat:37.289052,lon:127.053697},{loc:'강원도',lat:37.884856,lon:127.729701},{loc:'충청남도',lat:36.658627,lon:126.673915},
+        {loc:'충청북도',lat:36.635508,lon:127.491323},{loc:'서울',lat:31.2212,lon:123.212},{loc:'경상북도',lat:36.575947,lon:128.505889},{loc:'경상남도',lat:35.238099,lon:128.691418},
+        {loc:'전라북도',lat:31.2212,lon:123.212},{loc:'전라남도',lat:31.2212,lon:123.212},{loc:'제주도',lat:31.2212,lon:123.212}
+    ]
+    let COUNT_LOC = locKorea.length;
+
 
     const getCurrentLocation = ()=>{
         navigator.geolocation.getCurrentPosition((position) => {
-            let lat = position.coords.latitude;
-            let lon = position.coords.longitude;
+            let lat = 0;
+            let lon = 0;
+            let locPo = '';
+            if(COUNT_LOC === locKorea.length) {
+
+                COUNT_LOC = 0;
+                lat = position.coords.latitude;
+                lon = position.coords.longitude;
+                locPo = '현재위치'
+            }else{
+
+                lat = locKorea[COUNT_LOC].lat
+                lon = locKorea[COUNT_LOC].lon
+                locPo = locKorea[COUNT_LOC].loc
+                COUNT_LOC ++;
+            }
 
             // console.log('현재 위치는 ::: ', lat, lon);
-            getWeatherByCurrentLocation(lat,lon);
+            getWeatherByCurrentLocation(lat,lon,locPo);
 
         })
     }
-    getCurrentLocation()
-    const getWeatherByCurrentLocation = async (lat, lon)=>{
+    // getCurrentLocation()
+    const getWeatherByCurrentLocation = async (lat, lon, locPo)=>{
         let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=e4da173a465467c2fe1afdf007ebb1f8&units=metric`;
         let response = await fetch(url);
         let data = await response.json();
-        displayWeeklyWeather(data);
+        displayWeeklyWeather(data,locPo);
         // setWeather(data);
         // console.log("현재날씨는?", data);
     }
 
-    function fahrenheitToCelsius(fahrenheit) {
-        console.log(fahrenheit)
-        return fahrenheit - 273.15;
-    }
+    // function fahrenheitToCelsius(fahrenheit) {
+    //     console.log(fahrenheit)
+    //     return fahrenheit - 273.15;
+    // }
 
-    function displayWeeklyWeather(data) {
+    function displayWeeklyWeather(data,locPo) {
         const weeklyForecast = document.querySelector('.weekly-forecast');
         const children = weeklyForecast.querySelectorAll('*');
         children.forEach(child => {
@@ -61,7 +111,7 @@ function Home(props) {
         const dailyForecasts = data.list.filter((item, index) => index % 4 === 0); // 각 날짜의 첫번째 예보만 선택
 
         // dailyForecasts.forEach(forecast => {
-        for(let i = 0; i < dailyForecasts.length; i++){
+        for(let i = 0; i < dailyForecasts.length-1; i++){
 
             let forecast = dailyForecasts[i];
             const date = new Date(forecast.dt * 1000);
@@ -84,24 +134,24 @@ function Home(props) {
             weatherIcon.alt = '날씨 아이콘';
 
 
-            console.log(forecastItem)
+            // console.log(forecastItem)
             if(hours>=12) {
                 if(i === 0){
-                    forecastItem.innerHTML = ` <strong>오늘</strong>`;
+                    forecastItem.innerHTML = ` <h4 style="color:black"><strong>${locPo}</strong></h4><br/></strong></h4><strong>오늘</strong>`;
                     forecastItem.appendChild(weatherIcon);
-                    forecastItem.innerHTML += `<br/> 온도: ${temperatureCelsius.toFixed(1)}℃`;
+                    forecastItem.innerHTML += `<br/>  ${temperatureCelsius.toFixed(1)}℃`;
                 }else{
-                    forecastItem.innerHTML = `${timeOfDay}`
+                    forecastItem.innerHTML = `${timeOfDay}<br/>`
                     forecastItem.appendChild(weatherIcon);
-                    forecastItem.innerHTML += `<br/> 온도: ${temperatureCelsius.toFixed(1)}℃`;
+                    forecastItem.innerHTML += `<br/>  ${temperatureCelsius.toFixed(1)}℃`;
                     forecastItem.style.display="inline-block";
                 }
 
             }else{
 
-                forecastItem.innerHTML = `<strong>${date.toLocaleDateString().split(".")[2]}일<br/></strong> ${timeOfDay}`
+                forecastItem.innerHTML = `<strong>${date.toLocaleDateString().split(".")[2]}일<br/></strong> ${timeOfDay}<br/>`
                 forecastItem.appendChild(weatherIcon);
-                forecastItem.innerHTML += `<br/> 온도: ${temperatureCelsius.toFixed(1)}℃`;
+                forecastItem.innerHTML += `<br/> ${temperatureCelsius.toFixed(1)}℃`;
 
                 forecastItem.style.display="inline-block";
             }
@@ -113,10 +163,15 @@ function Home(props) {
 
 
 
+
     // window.onload = getCurrentLocation;
     useEffect(()=>{
         const timer = setTimeout(() => {
             getCurrentLocation();
+            const interval = setInterval(() => {
+                getCurrentLocation();
+            }, 100000); // 5초마다 실행
+            return () => clearInterval(interval);
         },1000);
         return () => clearTimeout(timer);
     },[]);
@@ -132,6 +187,14 @@ function Home(props) {
 
             <div id="skill">
                 <div className="skill-main">
+                    <form onSubmit={handleSubmit}>
+                        <label>id</label>
+                        <input type={'text'} name={'id'} onChange={handleChange}/>
+                        <label>id</label>
+                        <input type={'text'} name={'password'} onChange={handleChange}/>
+                        <input type={"submit"}/>
+
+                    </form>
                     {/* <!-- ================================ 배너 =============================== --> */}
 
                 </div>
