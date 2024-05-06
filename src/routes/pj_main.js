@@ -4,7 +4,7 @@ import SimpleSlider from "./SimpleSliderMain";
 import axios from "axios";
 import  {useNavigate, useParams} from "react-router-dom";
 
-const defaultImageUrl = 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAzMjVfMTM3%2FMDAxNzExMzY4MzE1ODEz.DYqObDP2EsPKoJio85HBRCa8qB8rpkyNtRmcgTktIJkg.kclPyFPdDIUDc_L9yWpqcB8j86fcpVsf-VEfGHhZH2wg.JPEG%2Fresized_91d1cc6e23ac1ecb24a8d7f546726ef71c7388b2.jpg&type=sc960_832';
+const defaultImageUrl = 'https://www.eclosio.ong/wp-content/uploads/2018/08/default.png';
 const PJmain = (props) => {
     const navigate = useNavigate();
     const [festivals, setFestivals] = useState([]);
