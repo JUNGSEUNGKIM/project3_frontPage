@@ -248,7 +248,7 @@ function AreaModal(props) {
                             <span>{event.FEEINFO}</span>
                             <h4>[{location}]</h4>
                             <h4>{shortEventName}</h4>
-                            <p>{shortDescription}</p>
+                            <i>{shortDescription}</i>
                             {/*<a>자세히보기</a>*/}
                             <a onClick={() => navigate(`/eventdetails/${event.EVENTID}`)}>자세히보기</a>
                         </div>

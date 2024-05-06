@@ -328,7 +328,7 @@ function FestivalDetails(props) {
                         <h4 style={{fontWeight: "bold"}}>주변시장</h4>
                         <hr/>
                         {!marketAndRestaurantData.market_data || marketAndRestaurantData.market_data.length === 0 ? (
-                            <p>근처에 시장이 없습니다.</p>
+                            <span>근처에 시장이 없습니다.</span>
                         ) : (
                             <div className={styles.market_container}>
                                 {marketAndRestaurantData.market_data
@@ -342,16 +342,16 @@ function FestivalDetails(props) {
                                                 margin: "0 0 5% 0",
                                                 width: "95%"
                                             }}/>
-                                            <p><span
+                                            <div><span
                                                 className={styles.label}>시장주소:</span>&emsp;&emsp;&emsp;{market.ROADADDRESS === "주소 X" ? market.JIBUNADDRESS : market.ROADADDRESS}
-                                            </p>
-                                            <p><span
+                                            </div>
+                                            <div><span
                                                 className={styles.label}>시장유형:</span>&emsp;&emsp;&emsp;{market.MARKETTYPE}
-                                            </p><br/>
-                                            <p>
+                                            </div>
+                                            <div>
                                                 <span className={styles.label}>시장까지의 거리:</span>
                                                 {calculateDistance(festivalData[0].Latitude, festivalData[0].Longitude, market.LATITUDE, market.LONGITUDE).toFixed(2)} km
-                                            </p>
+                                            </div>
                                         </div>
                                     ))}
                             </div>
@@ -372,7 +372,7 @@ function FestivalDetails(props) {
                         <h4 style={{fontWeight: "bold"}}>주변맛집</h4>
                         <hr/>
                         {!marketAndRestaurantData.yumyum_data || marketAndRestaurantData.yumyum_data.length === 0 ? (
-                            <p>근처에 맛집이 없습니다.</p>
+                            <span>근처에 맛집이 없습니다.</span>
                         ) : (
                             <div className={styles.restaurant_container}>
                                 {marketAndRestaurantData.yumyum_data

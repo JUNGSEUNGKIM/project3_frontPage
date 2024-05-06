@@ -117,12 +117,12 @@ const FestivalSlider = ( myProp ) => {
                                                 <InfoText>
                                                     {/*{overlayContent.zone}*/}
                                                     <h3>{festival.FestivalName}</h3>
-                                                    <p style={{fontSize: '1.4rem'}}>
+                                                    <span style={{fontSize: '1.4rem'}}>
                                                         {festival.RoadAddress === "주소 X" ? festival.JibunAddress : festival.RoadAddress}
-                                                    </p>
-                                                    <p style={{fontSize: '1.2rem'}}>
+                                                    </span><br/>
+                                                    <span style={{fontSize: '1.2rem'}}>
                                                         {festival.StartDate}~{festival.EndDate}
-                                                    </p>
+                                                    </span><br/>
                                                     {/*<a href={`/festivaldetails/${festival.FestivalID}`}><LinkButton>자세히보기</LinkButton></a>*/}
                                                     {/*<Nav.Link onClick={()=>{navigate(`/festivaldetails/${festival.FestivalID}`)}}>자세히보기</Nav.Link>*/}
                                                     {/*<LinkButton onClick={() => navigate(`/festivaldetails/${festival.FestivalID}`)}>*/}
@@ -138,7 +138,7 @@ const FestivalSlider = ( myProp ) => {
                         })}
                     </StyledSlider>
                 ) : (
-                    <p>진행중인 축제가 없습니다.</p>
+                    <span>진행중인 축제가 없습니다.</span>
                 )}
             </Container>
         );
