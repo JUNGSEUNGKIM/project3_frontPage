@@ -223,7 +223,6 @@ function FestivalDetails(props) {
 
                             </div>
                             <div className={styles.details_festival_img}>
-                                <p>디폴트 이미지</p>
                                 <img src={props.imgURL+"/"+festivalData[0].ImageName.split(";")[0]}/>
                             </div>
                         </div>
@@ -348,8 +347,9 @@ function FestivalDetails(props) {
                                             </p>
                                             <p><span
                                                 className={styles.label}>시장유형:</span>&emsp;&emsp;&emsp;{market.MARKETTYPE}
-                                            </p>
-                                            <p><span className={styles.label}>시장까지의 거리:</span>
+                                            </p><br/>
+                                            <p>
+                                                <span className={styles.label}>시장까지의 거리:</span>
                                                 {calculateDistance(festivalData[0].Latitude, festivalData[0].Longitude, market.LATITUDE, market.LONGITUDE).toFixed(2)} km
                                             </p>
                                         </div>

@@ -12,27 +12,28 @@ function EventDetails() {
 
     const { EVENTID}  = useParams();
     const [eventData, setEventData] = useState([]);
+    const [marketAndRestaurantData, setMarketAndRestaurantData] = useState([]);
     const [loading, setLoading] = useState(true);
     // console.log("EVENTID::::",EVENTID)
 
     // 지도관련
     const [zoomable, setZoomable] = useState(false);
 
-    // // 페이징 처리
-    // const [marketPage, setMarketPage] = useState(0);
-    // const nextMarketPage = () => {
-    //     setMarketPage(prev => prev + 1);
-    // };
-    // const prevMarketPage = () => {
-    //     setMarketPage(prev => prev - 1);
-    // };
-    // const [restaurantPage, setRestaurantPage] = useState(0);
-    // const nextRestaurantPage = () => {
-    //     setRestaurantPage(prev => prev + 1);
-    // };
-    // const prevRestaurantPage = () => {
-    //     setRestaurantPage(prev => prev - 1);
-    // };
+    // 페이징 처리
+    const [marketPage, setMarketPage] = useState(0);
+    const nextMarketPage = () => {
+        setMarketPage(prev => prev + 1);
+    };
+    const prevMarketPage = () => {
+        setMarketPage(prev => prev - 1);
+    };
+    const [restaurantPage, setRestaurantPage] = useState(0);
+    const nextRestaurantPage = () => {
+        setRestaurantPage(prev => prev + 1);
+    };
+    const prevRestaurantPage = () => {
+        setRestaurantPage(prev => prev - 1);
+    };
 
 
     // 전시정보 가져오기
@@ -58,6 +59,70 @@ function EventDetails() {
         fetchData();
     }, []);
 
+    // 시장,맛집 정보 가져오기
+    useEffect(() => {
+        const fetchGarageData = async () => {
+            try {
+                const garageDataResponse = await axios.get(`http://localhost:5000/garage_data`, {
+                    params: {
+                        id: EVENTID
+                    }
+                });
+                setMarketAndRestaurantData(garageDataResponse.data);
+                // setLoading(false);
+                console.log("Garage Data:", garageDataResponse.data); // 전체데이터 출력
+                console.log("Market Data:", garageDataResponse.data.market_data); // 시장 데이터 출력
+                // console.log("YumYum Data:", garageDataResponse.data.yumyum_data); // 맛집 데이터 출력
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+
+        };
+
+        fetchGarageData();
+    }, []);
+
+
+    // 지도 이미지 마커 표시
+    // const markerImageSrc =
+    //     "https://i.ibb.co/jL92hxR/Result.png"
+    //
+    // const imageSize = { width: 28, height: 29 }
+    // const spriteSize = { width: 36, height: 98 }
+    //
+    // const [selectedCategory, setSelectedCategory] = useState("event")
+    //
+    // useEffect(() => {
+    //     const eventMenu = document.getElementById("eventMenu")
+    //     const marketMenu = document.getElementById("marketMenu")
+    //     const restaurantMenu = document.getElementById("restaurantMenu")
+    //
+    //     if (eventMenu && marketMenu && restaurantMenu) { // DOM 요소가 준비되었을 때만 실행
+    //         if (selectedCategory === "event") {
+    //             // 전시 카테고리를 선택된 스타일로 변경
+    //             eventMenu.className = "menu_selected"
+    //
+    //             // 시장과 맛집 카테고리는 선택되지 않은 스타일로 바꿉니다
+    //             marketMenu.className = ""
+    //             restaurantMenu.className = ""
+    //         } else if (selectedCategory === "market") {
+    //             // 시장 카테고리가 클릭됐을 때
+    //
+    //             // 시장 카테고리를 선택된 스타일로 변경하고
+    //             eventMenu.className = ""
+    //             marketMenu.className = "menu_selected"
+    //             restaurantMenu.className = ""
+    //         } else if (selectedCategory === "restaurant") {
+    //             // 맛집 카테고리가 클릭됐을 때
+    //
+    //             // 맛집 카테고리를 선택된 스타일로 변경하고
+    //             eventMenu.className = ""
+    //             marketMenu.className = ""
+    //             restaurantMenu.className = "menu_selected"
+    //         }
+    //     }
+    // }, [])
+
     // console.log("festivalData::::", festivalData);
     // console.log("FestivalDataInfo::::", festivalData[0]);
     // console.log("FestivalName::::", festivalData[0].FestivalName);
@@ -69,28 +134,55 @@ function EventDetails() {
     }
 
 
-    ///// 축제장소와 맛집 사이의 거리를 계산하는 함수(직선거리)
-    // const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    //     const R = 6371; // 지구의 반지름 (단위: km)
-    //     const dLat = toRad(lat2 - lat1);
-    //     const dLon = toRad(lon2 - lon1);
-    //     const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    //         Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-    //         Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    //     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    //     const distance = R * c;
-    //     return distance;
-    // };
+    /// 축제장소와 맛집 사이의 거리를 계산하는 함수(직선거리)
+    const calculateDistance = (lat1, lon1, lat2, lon2) => {
+        const R = 6371; // 지구의 반지름 (단위: km)
+        const dLat = toRad(lat2 - lat1);
+        const dLon = toRad(lon2 - lon1);
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const distance = R * c;
+        return distance;
+    };
+
+    // 지도 마커표시
+
+    //  마커가 표시될 좌표 배열입니다
+    // const festivalPositions = {
+    // {lat: festivalData[0].Latitude, lng: festivalData[0].Longitude}
+    // }
+    // const eventOrigin = { x: 1, y: 0 }
     //
-    // const toRad = (value) => {
-    //     return (value * Math.PI) / 180;
+    // // 시장 마커가 표시될 좌표
+    // const marketPositions =
+    //     marketAndRestaurantData.market_data.map(market => ({
+    //         lat: market.LATITUDE,
+    //         lng: market.LONGITUDE
+    //     }));
+    //
+    // const marketOrigin = { x: 1, y: 34 }
+    //
+    // // 맛집 마커가 표시될 좌표
+    // const restaurantPositions = marketAndRestaurantData.yumyum_data.map(restaurant => ({
+    //     lat: restaurant.LATITUDE,
+    //     lng: restaurant.LONGITUDE
+    // }));
+    // const restaurantOrigin = { x: 1, y: 69 }
+    //
+    // const handleCategoryClick = (category) => {
+    //     setSelectedCategory(category);
     // };
+
+    const toRad = (value) => {
+        return (value * Math.PI) / 180;
+    };
 
     const startDate = new Date(eventData[0].STARTDATE);
     const endDate = new Date(eventData[0].ENDDATE);
     const formattedStartDate = startDate.toLocaleDateString(); // "2024-08-29"
     const formattedEndDate = endDate.toLocaleDateString();
-
 
 
 
@@ -111,7 +203,7 @@ function EventDetails() {
 
                 <div className={styles.details_content}>
 
-                    {/* 축제 내용 PART */}
+                    {/* 전시 내용 PART */}
                     <div className={styles.details_event_info}>
                         {/*<div className={styles.details_festival_info}>*/}
                         <h4 style={{fontWeight:"bold"}}>상세정보</h4>
@@ -137,119 +229,169 @@ function EventDetails() {
                     </div>
 
 
-                    {/* 축제 지도 PART */}
+                    {/* 전시 지도 PART */}
                     <div className={styles.festival_map}>
 
-                            <Map
-                                className={styles.map}
-                                center={{lat: eventData[0].LATITUDE, lng: eventData[0].LONGITUDE}}
-                                level={3} // 지도의 확대 레벨
-                                zoomable={zoomable}
+                        <Map
+                            className={styles.map}
+                            center={{lat: eventData[0].LATITUDE, lng: eventData[0].LONGITUDE}}
+                            level={3} // 지도의 확대 레벨
+                            zoomable={zoomable}
 
-                            >
-                                <div className={styles.buttonOverlay}>
-                                    <button onClick={() => setZoomable(prevZoomable => !prevZoomable)}>
-                                        {zoomable ? '확대/축소 끄기' : '확대/축소 켜기'}
-                                    </button>
+                        >
+                            <div className={styles.event_buttonOverlay}>
+                                <div className="category" style={{marginTop: "-80px"}}>
+                                    {/*<button id={styles.marketMenu} onClick={() => handleCategoryClick("market")}>*/}
+                                    {/*    <span className="ico_comm ico_store"></span>*/}
+                                    {/*    시장*/}
+                                    {/*</button>*/}
+                                    {/*<button id={styles.restaurantMenu}*/}
+                                    {/*        onClick={() => handleCategoryClick("restaurant")}>*/}
+                                    {/*    <span className="ico_comm ico_carpark"></span>*/}
+                                    {/*    맛집*/}
+                                    {/*</button>*/}
+                                    {/*<button onClick={() => handleCategoryClick("event")}>*/}
+                                    {/*    <span className="ico_comm ico_event"></span>*/}
+                                    {/*    축제만보기*/}
+                                    {/*</button>*/}
                                 </div>
-                                {/*//지도에 보여줄 위치 지정 (위도,경도)*/}
+                                <button onClick={() => setZoomable(prevZoomable => !prevZoomable)}>
+                                    {zoomable ? '확대/축소 끄기' : '확대/축소 켜기'}
+                                </button>
+                            </div>
+                            {/*//지도에 보여줄 위치 지정 (위도,경도)*/}
 
-                                <MapMarker
-                                    style={{border: 'tranparent'}}
-                                    position={{lat: eventData[0].LATITUDE, lng: eventData[0].LONGITUDE}}
-                                    // image={{
-                                    //         // src: "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png", // 마커이미지주소
-                                    //         src: process.env.PUBLIC_URL + '/assets/img/festival/festival.png', // 마커이미지주소
-                                    //     size: {
-                                    //         width: 50,
-                                    //         height: 67,
-                                    //     }, // 마커이미지의 크기입니다
-                                    // }}
-                                >
+                            <MapMarker
+                                style={{border: 'tranparent'}}
+                                position={{lat: eventData[0].LATITUDE, lng: eventData[0].LONGITUDE}}
+                                // image={{
+                                //     src: markerImageSrc,
+                                //     size: imageSize,
+                                //     options: {
+                                //         spriteSize: spriteSize,
+                                //         spriteOrigin: eventOrigin,
+                                //     },
+                                // }}
+                            />
 
-                                </MapMarker>
-                            </Map>
-                        {/*//핀에 적힐 이름 (위치 이름)*/}
+                            {/*{selectedCategory === "market" &&*/}
+                            {/*    marketPositions.map((position) => (*/}
+                            {/*        <MapMarker*/}
+                            {/*            key={`market-${position.lat},${position.lng}`}*/}
+                            {/*            position={position}*/}
+                            {/*            image={{*/}
+                            {/*                src: markerImageSrc,*/}
+                            {/*                size: imageSize,*/}
+                            {/*                options: {*/}
+                            {/*                    spriteSize: spriteSize,*/}
+                            {/*                    spriteOrigin: marketOrigin,*/}
+                            {/*                },*/}
+                            {/*            }}*/}
+                            {/*        />*/}
+                            {/*    ))}*/}
+                            {/*{selectedCategory === "restaurant" &&*/}
+                            {/*    restaurantPositions.map((position) => (*/}
+                            {/*        <MapMarker*/}
+                            {/*            key={`restaurant-${position.lat},${position.lng}`}*/}
+                            {/*            position={position}*/}
+                            {/*            image={{*/}
+                            {/*                src: markerImageSrc,*/}
+                            {/*                size: imageSize,*/}
+                            {/*                options: {*/}
+                            {/*                    spriteSize: spriteSize,*/}
+                            {/*                    spriteOrigin: restaurantOrigin,*/}
+                            {/*                },*/}
+                            {/*            }}*/}
+                            {/*        />*/}
+                            {/*    ))}*/}
+                        </Map>
 
 
                     </div>
 
 
-                    {/*/!* 주변시장 *!/*/}
-                    {/*<div className={styles.regional_market}>*/}
-                    {/*    <h4 style={{fontWeight: "bold"}}>주변시장</h4>*/}
-                    {/*    <hr/>*/}
-                    {/*    {!marketAndRestaurantData.market_data || marketAndRestaurantData.market_data.length === 0 ? (*/}
-                    {/*        <p>근처에 시장이 없습니다.</p>*/}
-                    {/*    ) : (*/}
-                    {/*        <div className={styles.market_container}>*/}
-                    {/*            {marketAndRestaurantData.market_data*/}
-                    {/*                .slice(marketPage * marketItemsPerPage, (marketPage + 1) * marketItemsPerPage)*/}
-                    {/*                .map((market, index) =>(*/}
-                    {/*                    <div key={index} className={styles.market_item}>*/}
-                    {/*                        /!*<p><span className={styles.label}>시장이름:</span> &emsp;&emsp;&emsp;{market.MARKETNAME}</p>*!/*/}
-                    {/*                        <h4 style={{fontWeight: "bold"}}>{market.MARKETNAME}</h4>*/}
-                    {/*                        <hr style={{border:"dashed 1px rgba(213, 233, 183, 0.76)", margin:"0 0 5% 0",width: "95%"}} />*/}
-                    {/*                            <p><span className={styles.label}>시장주소:</span>&emsp;&emsp;&emsp;{market.ROADADDRESS === "주소 X" ? market.JIBUNADDRESS : market.ROADADDRESS}</p>*/}
-                    {/*                            <p><span className={styles.label}>시장유형:</span>&emsp;&emsp;&emsp;{market.MARKETTYPE}</p>*/}
-                    {/*                            <p><span className={styles.label}>시장까지의 거리:</span>*/}
-                    {/*                                {calculateDistance(festivalData[0].Latitude, festivalData[0].Longitude, market.LATITUDE, market.LONGITUDE).toFixed(2)} km*/}
-                    {/*                            </p>*/}
-                    {/*                    </div>*/}
-                    {/*                ))}*/}
-                    {/*        </div>*/}
-                    {/*    )}*/}
-                    {/*    /!* 페이징 처리 *!/*/}
-                    {/*    {marketAndRestaurantData.market_data.length > marketItemsPerPage && (*/}
-                    {/*        <>*/}
-                    {/*            <button onClick={prevMarketPage} disabled={marketPage === 0}>이전</button>*/}
-                    {/*            <button onClick={nextMarketPage}*/}
-                    {/*                    disabled={(marketPage + 1) * marketItemsPerPage >= marketAndRestaurantData.market_data.length}>다음*/}
-                    {/*            </button>*/}
-                    {/*        </>*/}
-                    {/*        )}*/}
-                    {/*        </div>*/}
+                    {/* 주변시장 */}
+                    <div className={styles.regional_market}>
+                        <h4 style={{fontWeight: "bold"}}>주변시장</h4>
+                        <hr/>
+                        {marketAndRestaurantData.market_data && marketAndRestaurantData.market_data.length > 0 ? (
+                            <div className={styles.market_container}>
+                                {marketAndRestaurantData.market_data
+                                    .slice(marketPage * marketItemsPerPage, (marketPage + 1) * marketItemsPerPage)
+                                    .map((market, index) => (
+                                        <div key={index} className={styles.market_item}>
+                                            {/*<p><span className={styles.label}>시장이름:</span> &emsp;&emsp;&emsp;{market.MARKETNAME}</p>*/}
+                                            <h4 style={{fontWeight: "bold"}}>{market.MARKETNAME}</h4>
+                                            <hr style={{
+                                                border: "dashed 1px rgba(213, 233, 183, 0.76)",
+                                                margin: "0 0 5% 0",
+                                                width: "95%"
+                                            }}/>
+                                            <p><span
+                                                className={styles.label}>시장주소:</span>&emsp;&emsp;&emsp;{market.ROADADDRESS === "주소 X" ? market.JIBUNADDRESS : market.ROADADDRESS}
+                                            </p>
+                                            <p><span
+                                                className={styles.label}>시장유형:</span>&emsp;&emsp;&emsp;{market.MARKETTYPE}
+                                            </p>
+                                            <p><span className={styles.label}>시장까지의 거리:</span>
+                                                {calculateDistance(eventData[0].LATITUDE, eventData[0].LONGITUDE, market.LATITUDE, market.LONGITUDE).toFixed(2)} km
+                                            </p>
+                                        </div>
+                                    ))}
+                            </div>
+                        ) : (
+                            <p>근처에 시장이 없습니다.</p>
+                        )}
+                        {/* 페이징 처리 */}
+                        {marketAndRestaurantData.market_data && marketAndRestaurantData.market_data.length > marketItemsPerPage && (
+                            <>
+                                <button onClick={prevMarketPage} disabled={marketPage === 0}>이전</button>
+                                <button onClick={nextMarketPage}
+                                        disabled={(marketPage + 1) * marketItemsPerPage >= marketAndRestaurantData.market_data.length}>다음
+                                </button>
+                            </>
+                        )}
+                    </div>
 
+                    {/* 주변맛집 */}
+                    <div className={styles.regional_yumyum}>
+                        <h4 style={{fontWeight: "bold"}}>주변맛집</h4>
+                        <hr/>
+                        {marketAndRestaurantData.yumyum_data && marketAndRestaurantData.yumyum_data.length > 0 ? (
+                            <div className={styles.restaurant_container}>
+                                {marketAndRestaurantData.yumyum_data
+                                    .slice(restaurantPage * restaurantItemsPerPage, (restaurantPage + 1) * restaurantItemsPerPage)
+                                    .map((restaurant, index) => (
+                                        <div key={index} className={styles.restaurant_item}>
+                                            <h4 style={{fontWeight: "bold"}}>{restaurant.RESTAURANTNAME}</h4>
+                                            <hr style={{
+                                                border: "dashed 1px rgba(213, 233, 183, 0.76)",
+                                                margin: "0 0 5% 0",
+                                                width: "95%"
+                                            }}/>
+                                            <p>식당주소: {restaurant.RESTAURANTADDRESS}</p>
 
-                    {/*        <div className={styles.regional_yumyum}>*/}
-                    {/*<h4 style={{fontWeight: "bold"}}>주변맛집</h4>*/}
-                    {/*    <hr/>*/}
-                    {/*    {!marketAndRestaurantData.yumyum_data || marketAndRestaurantData.yumyum_data.length === 0 ? (*/}
-                    {/*        <p>근처에 맛집이 없습니다.</p>*/}
-                    {/*    ) : (*/}
-                    {/*        <div className={styles.restaurant_container}>*/}
-                    {/*            {marketAndRestaurantData.yumyum_data*/}
-                    {/*                .slice(restaurantPage * restaurantItemsPerPage, (restaurantPage + 1) * restaurantItemsPerPage)*/}
-                    {/*                .map((restaurant, index) =>(*/}
-                    {/*                    <div key={index} className={styles.restaurant_item}>*/}
-                    {/*                        /!*<p>식당명: {restaurant.RESTAURANTNAME}</p>*!/*/}
-                    {/*                        <h4 style={{fontWeight: "bold"}}>{restaurant.RESTAURANTNAME}</h4>*/}
-                    {/*                        <hr style={{*/}
-                    {/*                            border: "dashed 1px rgba(213, 233, 183, 0.76)",*/}
-                    {/*                            margin: "0 0 5% 0",*/}
-                    {/*                            width: "95%"*/}
-                    {/*                        }}/>*/}
-                    {/*                        <p>식당주소: {restaurant.RESTAURANTADDRESS}</p>*/}
-
-                    {/*                        /!* 위도와 경도를 사용하여 거리 계산 후 출력 *!/*/}
-                    {/*                        <p>식당까지의 거리:*/}
-                    {/*                            {calculateDistance(festivalData[0].Latitude, festivalData[0].Longitude, restaurant.LATITUDE, restaurant.LONGITUDE).toFixed(2)} km*/}
-                    {/*                        </p>*/}
-                    {/*                    </div>*/}
-                    {/*                ))}*/}
-                    {/*        </div>*/}
-                    {/*    )}*/}
-                    {/*            /!* 페이징 처리 버튼 *!/*/}
-                    {/*            {marketAndRestaurantData.yumyum_data.length > restaurantItemsPerPage && (*/}
-                    {/*        <>*/}
-                    {/*            <button onClick={prevRestaurantPage} disabled={restaurantPage === 0}>이전</button>*/}
-                    {/*            <button onClick={nextRestaurantPage}*/}
-                    {/*                    disabled={(restaurantPage + 1) * restaurantItemsPerPage >= marketAndRestaurantData.yumyum_data.length}>*/}
-                    {/*               다음*/}
-                    {/*            </button>*/}
-                    {/*        </>*/}
-                    {/*    )}*/}
-                    {/*</div>*/}
+                                            {/* 위도와 경도를 사용하여 거리 계산 후 출력 */}
+                                            <p>식당까지의 거리:
+                                                {calculateDistance(eventData[0].LATITUDE, eventData[0].LONGITUDE, restaurant.LATITUDE, restaurant.LONGITUDE).toFixed(2)} km
+                                            </p>
+                                        </div>
+                                    ))}
+                            </div>
+                        ) : (
+                            <p>근처에 맛집이 없습니다.</p>
+                        )}
+                        {/* 페이징 처리 버튼 */}
+                        {marketAndRestaurantData.yumyum_data && marketAndRestaurantData.yumyum_data.length > restaurantItemsPerPage && (
+                            <>
+                                <button onClick={prevRestaurantPage} disabled={restaurantPage === 0}>이전</button>
+                                <button onClick={nextRestaurantPage}
+                                        disabled={(restaurantPage + 1) * restaurantItemsPerPage >= marketAndRestaurantData.yumyum_data.length}>
+                                    다음
+                                </button>
+                            </>
+                        )}
+                    </div>
 
 
                     {/*<div className={styles.details_insta}>*/}
