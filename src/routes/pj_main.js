@@ -2,22 +2,128 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from './PJmain.module.css';
 import SimpleSlider from "./SimpleSliderMain";
 import axios from "axios";
+import  {useNavigate, useParams} from "react-router-dom";
+
+const defaultImageUrl = 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAzMjVfMTM3%2FMDAxNzExMzY4MzE1ODEz.DYqObDP2EsPKoJio85HBRCa8qB8rpkyNtRmcgTktIJkg.kclPyFPdDIUDc_L9yWpqcB8j86fcpVsf-VEfGHhZH2wg.JPEG%2Fresized_91d1cc6e23ac1ecb24a8d7f546726ef71c7388b2.jpg&type=sc960_832';
+const PJmain = (props) => {
+    const navigate = useNavigate();
+    const [festivals, setFestivals] = useState([]);
+    const [randomFestival, setRandomFestival] = useState([]);
+    const [randomMarket, setRandomMarket] = useState([]); // 시장 상태 추가
+    const [randomEat_place, setRandomEat_place] = useState([]);
+    const [selectedOption, setSelectedOption] = useState("festivals");
+    // const popularElement = document.querySelector('.popular');
 
 
-const PJmain = () => {
+    useEffect(() => {
+        const fetchData = async () => {
+            console.log(":::::fetchData 작동중:::::")
+            try {
+                const [festivalsResponse, marketsResponse, eatPlaceResponse] = await Promise.all([
+                    axios.get('http://localhost:5000/festival'),
+                    axios.get('http://localhost:5000/market'),
+                    axios.get('http://localhost:5000/eat_place')
+                    // axios.get('http://192.168.0.15:5000/festival'),
+                    // axios.get('http://192.168.0.15:5000/market'),
+                    // axios.get('http://192.168.0.15:5000/eat_place')
+                ]);
+
+                // Filter festivals for 2024
+                const festivals2024 = festivalsResponse.data.filter(festival => festival.STARTDATE.includes('2024'));
+                // Pick random items from each response data
+                const randomFestivals = pickRandomItems(festivals2024, 4);
+                const randomMarkets = pickRandomItems(marketsResponse.data, 4);
+                const randomEat_places = pickRandomItems(eatPlaceResponse.data, 4);
+                // console.log(festivals2024)
+
+                setRandomFestival(randomFestivals);
+                setRandomMarket(randomMarkets);
+                setRandomEat_place(randomEat_places);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        // Fetch data initially and then every 5 seconds
+        fetchData();
+        // const interval = setInterval(fetchData, 5000);
+
+        // return (() => {clearInterval(interval)})
+    }, []);
+    const pickRandomItems = (items, count) => {
+        if (items.length === 0) return [];
+        const randomItems = [];
+        for (let i = 0; i < count; i++) {
+            const randomIndex = Math.floor(Math.random() * items.length);
+            randomItems.push(items[randomIndex]);
+        }
+        return randomItems;
+    };
+
+    const handleRandomFestival = () => {
+        setRandomFestival(prevState => {
+            const newFestivalData = pickRandomItems(randomFestival, 4);
+            // setRandomMarket([]);
+            // setRandomEat_place([]);
+            return newFestivalData;
+        });
+    };
+
+    const handleRandomMarket = () => {
+        setRandomMarket(prevState => {
+            const newMarketData = pickRandomItems(randomMarket, 4);
+            // setRandomFestival([]);
+            // setRandomEat_place([]);
+            return newMarketData;
+        });
+    };
+
+    const handleRandomEatPlace = () => {
+        setRandomEat_place(prevState => {
+            const newEatPlaceData = pickRandomItems(randomEat_place, 4);
+            // setRandomFestival([]);
+            // setRandomMarket([]);
+            return newEatPlaceData;
+        });
+    };
+
+    const handleOptionChange = (option) => {
+        setSelectedOption(option);
+        switch (option) {
+            case "festivals":
+                setRandomFestival(randomFestival);
+                break;
+            case "market":
+                setRandomMarket(randomMarket);
+                break;
+            case "Eat_place":
+                setRandomEat_place(randomEat_place);
+                break;
+            default:
+                break;
+        }
+    };
     const items = [
 
     ];
     // let [itemNumber,setItemNumber] = useState(0);
 
-    for(var i =0; i < 10; i++){
-        items.push( { id: i, url: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=82d75629-ca89-4d4d-85b9-5e8dae133e20&mode=raw',main:'소희왕자 진자 멋있다',text:'특별한 체험이 있는 서울 고궁 야간개장',text1:'자세히 보기' })
-        items.push( { id: i, url: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=cb5ab904-aa43-45c2-a5fe-ff79102b1cf7&mode=raw',main:'데뷔 단체 사진',text:'특별한 체험이 있는 서울 고궁 야간개장',text1:'자세히 보기' })
-        items.push( { id: i, url: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=03701c87-65be-4ec7-b039-50a9c9bda2e7&mode=raw',main:'LOVE119' ,text:'특별한 체험이 있는 서울 고궁 야간개장',text1:'자세히 보기'  })
-        items.push( { id: i, url: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=7f000536-86d0-4a58-8aca-c65e2b97f32c&mode=raw',main:'LOVE119' ,text:'특별한 체험이 있는 서울 고궁 야간개장',text1:'자세히 보기'  })
-        items.push( { id: i, url: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=9cf52ccf-0692-4854-81a2-6c87f8a6d6f5&mode=raw',main:'LOVE119' ,text:'특별한 체험이 있는 서울 고궁 야간개장',text1:'자세히 보기'  })
-        items.push( { id: i, url: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=a310b6d9-a396-419b-9534-8aa6efe30f2c&mode=raw',main:'LOVE119' ,text:'특별한 체험이 있는 서울 고궁 야간개장',text1:'자세히 보기'  })
+    for(var i =0; i < 1; i++){
+        // items.push( { id: i, url: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=82d75629-ca89-4d4d-85b9-5e8dae133e20&mode=raw',main:'소희왕자 진자 멋있다',text:'특별한 체험이 있는 서울 고궁 야간개장',text1:'자세히 보기' })
+        // items.push( { id: i, url: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=cb5ab904-aa43-45c2-a5fe-ff79102b1cf7&mode=raw',main:'데뷔 단체 사진',text:'특별한 체험이 있는 서울 고궁 야간개장',text1:'자세히 보기' })
+        // items.push( { id: i, url: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=03701c87-65be-4ec7-b039-50a9c9bda2e7&mode=raw',main:'LOVE119' ,text:'특별한 체험이 있는 서울 고궁 야간개장',text1:'자세히 보기'  })
+        // items.push( { id: i, url: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=7f000536-86d0-4a58-8aca-c65e2b97f32c&mode=raw',main:'LOVE119' ,text:'특별한 체험이 있는 서울 고궁 야간개장',text1:'자세히 보기'  })
+        // items.push( { id: i, url: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=9cf52ccf-0692-4854-81a2-6c87f8a6d6f5&mode=raw',main:'LOVE119' ,text:'특별한 체험이 있는 서울 고궁 야간개장',text1:'자세히 보기'  })
+        // items.push( { id: i, url: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=a310b6d9-a396-419b-9534-8aa6efe30f2c&mode=raw',main:'LOVE119' ,text:'특별한 체험이 있는 서울 고궁 야간개장',text1:'자세히 보기'  })
 
+    }
+    let j = (randomFestival.length>10)?10:randomFestival.length;
+    if(randomFestival.length ===0){
+        items.push( { id: i, url: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=82d75629-ca89-4d4d-85b9-5e8dae133e20&mode=raw',main:'소희왕자 진자 멋있다',text:'특별한 체험이 있는 서울 고궁 야간개장',text1:'자세히 보기' })
+    }
+    for(var i= 0; i < j ; i++){
+        console.log(items)
+        items.push({id:randomFestival[i].FESTIVALID, url:props.imgURL+"/"+randomFestival[i].IMAGE_NAME.split(";")[0],main:'LOVE119',text:randomFestival[i].FESTIVALNAME,text1:'자세히 보기'})
     }
 
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -77,6 +183,17 @@ const PJmain = () => {
             // console.log('현재 위치는 ::: ', lat, lon);
             getWeatherByCurrentLocation(lat,lon,locPo);
 
+        },(error) => {
+            // 위치 정보를 가져오는 데 문제가 발생한 경우 다른 액션을 취함
+            if(COUNT_LOC === locKorea.length) {COUNT_LOC=0;}
+            let lat = locKorea[COUNT_LOC].lat
+            let lon = locKorea[COUNT_LOC].lon
+            let locPo = locKorea[COUNT_LOC].loc
+            COUNT_LOC ++;
+
+            getWeatherByCurrentLocation(lat,lon,locPo);
+            // console.error('위치 정보를 가져오는 데 문제 발생:', error);
+            // 여기에 원하는 처리 로직을 추가하세요.
         })
     }
     // getCurrentLocation()
@@ -89,17 +206,23 @@ const PJmain = () => {
         // console.log("현재날씨는?", data);
     }
 
-    // function fahrenheitToCelsius(fahrenheit) {
-    //     console.log(fahrenheit)
-    //     return fahrenheit - 273.15;
-    // }
-
     function displayWeeklyWeather(data,locPo) {
+        console.log("displayWeeklyWeather :::  작동중")
         const weeklyForecast = document.querySelector('.weekly-forecast');
-        const children = weeklyForecast.querySelectorAll('*');
-        children.forEach(child => {
-            child.remove();
-        });
+        if (weeklyForecast) {
+            // DOM 요소를 찾은 경우에만 코드 실행
+            const children = weeklyForecast.querySelectorAll('*');
+            children.forEach(child => {
+                child.remove();
+            });
+            // 나머지 코드는 여기에
+        } else {
+            console.error('Weekly forecast element not found.');
+        }
+        // const children = weeklyForecast.querySelectorAll('*');
+        // children.forEach(child => {
+        //     child.remove();
+        // });
         const dailyForecasts = data.list.filter((item, index) => index % 4 === 0); // 각 날짜의 첫번째 예보만 선택
 
         // dailyForecasts.forEach(forecast => {
@@ -147,49 +270,77 @@ const PJmain = () => {
 
                 forecastItem.style.display="inline-block";
             }
+            if (weeklyForecast) {
+                weeklyForecast.appendChild(forecastItem);
+            }else {
+                console.error('Weekly forecast element not found.');
+            }
 
 
-            weeklyForecast.appendChild(forecastItem);
+
         }
     }
 
     useEffect(() => {
-        intervalRef.current = setInterval(() => {
-            setCurrentIndex(prevIndex => (prevIndex + 1) % items.length);
-            setProgress(100);
-        }, 5000);
-
-        const progressInterval = setInterval(() => {
-            setProgress(prevProgress => prevProgress > 0 ? prevProgress - 2 : 0);
-        }, 100);
+        let interval;
         const timer = setTimeout(() => {
             getCurrentLocation();
-            const interval = setInterval(() => {
+             interval = setInterval(() => {
                 getCurrentLocation();
-            }, 100000); // 5초마다 실행
-            return () => clearInterval(interval);
+                // console.log("::::::::::: 이건 실행하는거야?")
+            }, 3000); // 5초마다 실행
+            return (() => {
+                           clearInterval(interval)
+                            clearTimeout(timer)
+                                                    });
         },1000);
+        return (()=>{
+            clearInterval(interval);
+            clearTimeout(timer)});
+
+    }, []);
+
+    useEffect(() => {
+        intervalRef.current = setInterval(() => {
+            setCurrentIndex(prevIndex => (prevIndex + 1) % items.length);
+            // setProgress(100);
+        }, 100000);
+
+
+
 
         return () => {
             clearInterval(intervalRef.current);
-            clearInterval(progressInterval);
-            clearTimeout(timer);
-        };
-    }, [items.length]);
+
+
+        }  },[] );
+    // }, [items.length]);
+    let [boardHead,setBoardHead]=useState([])
+
+    useEffect(() => {
+        axios.get(props.serverURL + "/main", { withCredentials: true })
+            .then(response => {
+                setBoardHead(response.data.result);
+                // console.log("::::::main??", response.data.result);
+            })
+            .catch(error => {
+                console.error("Error fetching board data:", error);
+            });
+    }, []);
 
 
     return (
         <div className={styles.basics}>
 
             <div className={styles.banner}>
-                <div className={styles.banner_letter}>
+                <div className={styles.banner_letter} >
                     <button
                         onClick={() => setCurrentIndex(currentIndex => (currentIndex - 1 + items.length) % items.length)}
                         className={styles.controlBtn}>&lt;</button>
                     <div className={styles.banner_letter_text}>
                         <div className={styles.mainText}>{items[currentIndex].main}</div>
-                        <div className={styles.additionalText}>{items[currentIndex].text}</div>
-                        <button onClick={() => alert("자세히 보기")} className={styles.linkText}>
+                        <div className={styles.additionalText} style={{minWidth:"15em"}}>{items[currentIndex].text}</div>
+                        <button onClick={() => navigate("/festivaldetails/"+items[currentIndex].id)} className={styles.linkText}>
                             {items[currentIndex].text1}
                         </button>
                     </div>
@@ -219,32 +370,37 @@ const PJmain = () => {
                         <div className="container">
 
                             <div className="row love-row">
-                                <div className="col-md-6 col-sm-12">
-                                    <div className="exp-details" data-wow-delay=".2s">
-                                        <div className="exp-hover"></div>
-                                        <div className="exp-main">
-                                            <i
-                                                className="fa fa-building exp-icon"
-                                                aria-hidden="true"
-                                            ></i>
-                                            <h3>
-                                                <a
-                                                    href="https://patelgtech.com/"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    style={{ color: "#4d4d4d" }}
-                                                >
-                                                    Patel G Tech LLP
-                                                </a>
-                                            </h3>
-                                            <h4>Repub Member</h4>
-                                            <h2>2019-2020</h2>
-                                            <div className="underline1"></div>
-                                            <div className="underline2"></div>
-                                            <p>
-                                                I did an internship at PATEL G TECH LLP as a
-                                                Republication Team Member
-                                            </p>
+                                <div className="col-md-6 col-sm-12" style={{minHeight:"323px"}}>
+                                    <div className="exp-details" data-wow-delay=".2s" style={{minHeight:"292px",marginBottom:"30px"}}>
+                                        {/*<div className="exp-hover"></div>*/}
+                                        <div className="exp-main" style={{minHeight:"px", paddingTop:"0.9em",paddingBottom:"0"}}>
+                                            {boardHead.length===0 ? <div>''</div>
+                                                :<div>
+                                                    <p style={{textAlign:"left",margin:0}}><h3 style={{marginBottom:"0.25em",marginTop:0 }}>오늘의 인기글</h3></p>
+
+
+                                                    {
+                                                        boardHead.map(board=>
+
+                                                        <div class="post" style={{display: "flex", alignItems:" center", marginBottom: "0", }}>
+                                                            <div style={{flex: "1", textAlign: "left"}}>
+                                                                <p style={{fontSize: "14px", color: "#666", textAlign: "left", margin: 0 }} onClick={()=>{navigate("/detailboard/"+board[0])}}><a>{board[2]}</a></p>
+                                                                <p style={{ fontSize: "12px", color: "#999",  margin: 0, display: "flex", textAlign: "right", marginLeft: "17em"
+                                                                }}>작성자:{board[1]}게시일:{new Date(board[3]).toLocaleDateString('ko-KR', {  year: '2-digit', month: '2-digit', day: '2-digit'  })} | 좋아요: {board[6]} | 조회수: {board[5]}</p>
+                                                                <hr style={{border: "none", borderTop: "1px solid #ccc",  margin: "0" }}/>
+                                                            </div>
+
+                                                        </div>
+                                                        )
+                                                    }
+
+
+                                                </div>
+
+
+                                            }
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -272,19 +428,119 @@ const PJmain = () => {
             {/* <!-- ================================ 추천 / 날씨 =============================== --> */}
 
 
+            <div style={{paddingBottom:"20px"}} className={styles.popular}>
+                <div className={styles.navigation_bar}>
+                    <button
+                        className={selectedOption === "festivals" ? styles.activeOption : styles.option}
+                        onClick={() => handleOptionChange("festivals")}
+                    >
+                        축제
+                    </button>
+                    <button
+                        className={selectedOption === "market" ? styles.activeOption : styles.option}
+                        onClick={() => handleOptionChange("market")}
+                    >
+                        시장
+                    </button>
+                    <button
+                        className={selectedOption === "Eat_place" ? styles.activeOption : styles.option}
+                        onClick={() => handleOptionChange("Eat_place")}
+                    >
+                        맛집
+                    </button>
+                </div>
+                {/*<div className="arrow">▼</div> /!* 화살표 *!/*/}
+            </div>
             <div className={styles.popular}>
                 <div className={styles.popular_title_container}>
-                    <div className={styles.popular_main_title}>인기 게시글</div>
-                    <div className={styles.popular_sub_title}>오늘 가장 핫한 게시글을 확인해보세요!</div>
+                    <div className={styles.popular_main_title}>이달에 가장 인기
+                        있는 {selectedOption === "festivals" ? "축제" : selectedOption === "market" ? "시장" : "맛집"}</div>
+                    <div className={styles.popular_sub_title}>오늘 가장
+                        핫한 {selectedOption === "festivals" ? "축제" : selectedOption === "market" ? "시장" : "맛집"}을
+                        확인해보세요!
+
+                    </div>
                 </div>
                 <div className={styles.popular_boxes_container}>
-                    <div className={styles.popular_box}>첫 번째 박스</div>
-                    <div className={styles.popular_box}>두 번째 박스</div>
-                    <div className={styles.popular_box}>세 번째 박스</div>
-                    <div className={styles.popular_box}>네 번째 박스</div>
+                    {selectedOption === "festivals" && randomFestival && randomFestival.map((festival, index) => (
+                        <div key={index} className={styles.popular_box} onClick={() => navigate("/festivaldetails/"+festival.FESTIVALID)}>
+
+                            <img src={festival.IMAGE_NAME && festival.IMAGE_NAME.split(";").length > 0 ? props.imgURL+"/"+festival.IMAGE_NAME.split(";")[0] : defaultImageUrl} alt="축제
+                                이미지" className={styles.festival_image}/>
+                            <div className={styles.festival_info}>
+                                <p className={styles.festival_name}>{festival.FESTIVALNAME}</p>
+                                <div className={styles.mobileOnlyDetails}>
+                                    <p>{festival.LOCATION}</p>
+                                    <p>{festival.STARTDATE} ~ {festival.ENDDATE}</p>
+                                    {/* 축제 내용이 숨겨진 상태에서 호버 시 확장됨 */}
+                                    <p className={`${styles.festival_description} ${styles.hidden}`}>{festival.STARTDATE}</p>
+                                </div>
+                                {/* 마우스를 올렸을 때만 축제 내용 표시 */}
+                                <p className={`${styles.festival_description} ${styles.hiddenOnHover}`}>{festival.DESCRIPTION}</p>
+                            </div>
+                        </div>
+                    ))}
+
                 </div>
+                {selectedOption === "festivals" && (
+                    <button onClick={handleRandomFestival} className={styles.randomButton}>
+                        랜덤 축제 보기
+                    </button>
+                )}
             </div>
-            <div className={styles.insta}>인스타추천</div>
+            {/*{randomMarket}*/}
+            <div className={styles.popular}>
+                <div className={styles.popular_boxes_container}>
+                    {/* 시장 정보를 표시하는 부분 */}
+                    {selectedOption === "market" && randomMarket && randomMarket.map((market, index) => (
+                        <div key={index} className={styles.popular_box}>
+                            <img src={market.url || defaultImageUrl} alt="시장 이미지" className={styles.market_image}/>
+                            <div className={styles.market_info}>
+                                <p className={styles.market_name}>{market.MARKETNAME}</p>
+                                <div className={styles.mobileOnlyDetails}>
+                                    <p>{market.MARKETNAME}</p>
+                                    <p>{market.JIBUNADDRESS}</p>
+                                    {/* 시장 내용이 숨겨진 상태에서 호버 시 확장됨 */}
+                                    <p className={`${styles.market_description} ${styles.hidden}`}>{market.MARKETNAME}</p>
+                                </div>
+                                {/* 마우스를 올렸을 때만 시장 내용 표시 */}
+                                <p className={`${styles.market_description} ${styles.hiddenOnHover}`}>{market.JIBUNADDRESS}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                {selectedOption === "market" && (
+                    <button onClick={handleRandomMarket} className={styles.randomButton}>
+                        랜덤 시장 보기
+                    </button>
+                )}
+            </div>
+            <div className={styles.popular}>
+                <div className={styles.popular_boxes_container}>
+                    {selectedOption === "Eat_place" && randomEat_place && randomEat_place.map((Eat_place, index) => (
+                        <div key={index} className={styles.popular_box}>
+                            <img src={Eat_place.url || defaultImageUrl} alt="맛집 이미지"
+                                 className={styles.Eat_place_image}/>
+                            <div className={styles.Eat_place_info}>
+                                <p className={styles.Eat_place_name}>{Eat_place.RESTAURANTNAME}</p>
+                                <div className={styles.mobileOnlyDetails}>
+                                    <p>{Eat_place.RESTAURANTNAME}</p>
+                                    <p>{Eat_place.REGION}</p>
+                                    {/* 맛집 내용이 숨겨진 상태에서 호버 시 확장됨 */}
+                                    <p className={`${styles.Eat_place_description} ${styles.hidden}`}>{Eat_place.RESTAURANTNAME}</p>
+                                </div>
+                                {/* 마우스를 올렸을 때만 맛집 내용 표시 */}
+                                <p className={`${styles.Eat_place_description} ${styles.hiddenOnHover}`}>{Eat_place.REGION}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                {selectedOption === "Eat_place" && (
+                    <button onClick={handleRandomEatPlace} className={styles.randomButton}>
+                        랜덤 맛집 보기
+                    </button>
+                )}
+            </div>
         </div>
 
     )

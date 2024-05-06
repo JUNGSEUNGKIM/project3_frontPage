@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import styles from './login.module.css';
 import axios from "axios";
 import  {useNavigate, useParams} from "react-router-dom";
- function Login(props) {
+ function Personalized(props) {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         id: '',
@@ -20,7 +20,7 @@ import  {useNavigate, useParams} from "react-router-dom";
 
     const loginFunction =  ()=>{
         console.log("버튼 ")
-        axios.post(props.serverURL+'/login', formData,{withCredentials: true})
+        axios.post('http://192.168.0.21:3000/login', formData,{withCredentials: true})
             .then(res=>{
                 console.log('데이터 전송 성공:', res);
 
@@ -125,4 +125,4 @@ import  {useNavigate, useParams} from "react-router-dom";
     )
 }
 
-export default Login;
+export default Personalized;

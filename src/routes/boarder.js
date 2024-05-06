@@ -2,17 +2,47 @@ import {useParams, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import styles from './boarder.module.css';
 import axios from "axios";
+import {useQuery} from "react-query";
 
-
-function Borader(props) {
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // 부드럽게 스크롤
+    });
+}
+function Borader(props){
     const navigate = useNavigate();
     const [isExpanded, setIsExpanded] = useState({});
-    useEffect(()=>{
-        axios.get(props.serverURL+'/boardmain',{withCredentials: true})
-            .then(res=>{
-                console.log(res)
-            })
-    })
+    const [params, setParams] = useState('')
+    const [resultQue,setResultQue]=useState({});
+    const [trueResult, setTrueResult] = useState(false)
+    //
+    //  setResultQue( useQuery('boardData', () =>
+    //     axios.get(props.serverURL+'/boardmain'+params, { withCredentials: true })
+    //         .then(response => response.data)
+    // ));
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await axios.get(props.serverURL+'/boardmain'+params, { withCredentials: true });
+            setResultQue(result.data);
+            resultQue ? setTrueResult(true) : setTrueResult(false)
+            console.log(result.data)
+            scrollToTop();
+        };
+
+        fetchData();
+
+        // console.log(resultQue)
+    }, [params,setResultQue]);
+
+    useEffect(() => {
+        console.log(resultQue); // resultQue가 업데이트될 때마다 실행됨
+    }, [resultQue]);
+
+    const [reqData, setReqData] = useState();
+
+
     const toggleExpanded = id => {
         setIsExpanded(prevState => ({
             ...prevState,
@@ -20,13 +50,16 @@ function Borader(props) {
         }));
     };
 
+
     return (
+
         <div className="main-page-content">
 
-
-
-
             {/* <!-- ============================================== SERVICE ===================================================== --> */}
+            {/*{resultQue}*/}
+            {!trueResult  && <div>Loading...</div>}
+
+            {trueResult  && (
 
             <div id="service">
                 <div className="service-content">
@@ -39,329 +72,99 @@ function Borader(props) {
                                         <div className="underline1"></div>
                                         <div className="underline2"></div>
                                         <p>
-                                           축제 후기를 올려주세요
+                                            축제 후기를 올려주세요
+
                                         </p>
                                     </div>
-                                    <button  onClick={()=>{
+                                    <button onClick={() => {
 
                                         navigate("/create");
-                                    }}>글쓰기</button>
+                                    }}>글쓰기
+                                    </button>
                                 </div>
                             </div>
                             <div className="row love-row wow fadeIn">
-                                <div className="col-md-4 col-sm-6">
-                                    <div className="service-details" data-wow-delay=".1s" style={{maxHeight: '25%'}}>
-                                        <div className="service-head">
-                                            <img
-                                                src="assets/img/service/design-development.jpg"
-                                                alt="design-development"
-                                            />
-                                        </div>
-                                        <div className="service-bottom">
+                                {
+                                    resultQue.board.map(board => (
+                                        <div className="col-md-4 col-sm-6" >
+                                            <div className="service-details" data-wow-delay=".1s"
+                                                 style={{maxHeight: '35em', minHeight:"35em"}}>
+                                                <div className="service-head">
+                                                    <a  onClick={()=>{
+                                                        navigate("/detailboard/"+board[0])}}>
+                                                    <img // src="assets/img/service/design-development.jpg"
+                                                        src={props.imgURL + "/" + board[7].split(';')[0]}
+                                                        alt="design-development"
+                                                        style={{maxHeight: "200px"}}
+                                                    /></a>
 
-                                            <h3>Design + Development</h3>
-                                            <div className="underline1"></div>
-                                            <div className="underline2"></div>
-                                            <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-                                            <a onClick={() => toggleExpanded(1)}>
-                                                {isExpanded[1] ? '접기' : '더보기'}
-                                            </a>
-                                            <h6>작성자 : abc</h6>
-                                            <h6>좋아요 : like</h6>
+                                                </div>
+                                                <div className="service-bottom">
+
+                                                    <a  onClick={()=>{
+                                                        navigate("/detailboard/"+board[0])
+
+                                                    }}><h3 >{board[1]}&nbsp;&nbsp;[{board[8]}]</h3></a>
+                                                    <div className="underline1"></div>
+                                                    <div className="underline2"></div>
+                                                    <div style={{
+                                                        display: 'grid',
+                                                        gridTemplateColumns: 'repeat(3, 1fr)',
+                                                        gap: '10px'
+                                                    }}>
+                                                        <a onClick={() => toggleExpanded(board[0])}>
+                                                            {isExpanded[board[0]] ? '접기' : '더보기'}
+                                                        </a>
+                                                        <h6>작성자 : {board[2]}</h6>
+                                                        <h6>좋아요 : {board[5]}</h6>
+                                                    </div>
+
+                                                    <p style={{
+                                                        maxHeight: isExpanded[1] ? 'none' : '100px',
+                                                        overflow: 'hidden',
+                                                        textAlign: 'center',
+                                                        marginLeft: 0
+                                                    }}>
+                                                        {board[6]}
+
+
+                                                    </p>
+
+                                                </div>
                                             </div>
-
-                                            <p style={{
-                                                maxHeight: isExpanded[1] ? 'none' : '100px',
-                                                overflow: 'hidden',
-                                                textAlign: 'center',
-                                                marginLeft: 0
-                                            }}>
-                                                Looking to improve your page performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.
-
-
-                                            </p>
-
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 col-sm-6">
-                                    <div className="service-details" data-wow-delay=".1s" style={{maxHeight: '25%'}}>
-                                        <div className="service-head">
-                                            <img
-                                                src="assets/img/service/design-development.jpg"
-                                                alt="design-development"
-                                            />
-                                        </div>
-                                        <div className="service-bottom">
-
-                                            <h3>Design + Development</h3>
-                                            <div className="underline1"></div>
-                                            <div className="underline2"></div>
-                                            <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-                                                <a onClick={() => toggleExpanded(1)}>
-                                                    {isExpanded[1] ? '접기' : '더보기'}
-                                                </a>
-                                                <h6>작성자 : abc</h6>
-                                                <h6>좋아요 : like</h6>
-                                            </div>
-
-                                            <p style={{
-                                                maxHeight: isExpanded[1] ? 'none' : '100px',
-                                                overflow: 'hidden',
-                                                textAlign: 'center',
-                                                marginLeft: 0
-                                            }}>
-                                                Looking to improve your page performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.
-
-
-                                            </p>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 col-sm-6">
-                                    <div className="service-details" data-wow-delay=".1s" style={{maxHeight: '25%'}}>
-                                        <div className="service-head">
-                                            <img
-                                                src="assets/img/service/design-development.jpg"
-                                                alt="design-development"
-                                            />
-                                        </div>
-                                        <div className="service-bottom">
-
-                                            <h3>Design + Development</h3>
-                                            <div className="underline1"></div>
-                                            <div className="underline2"></div>
-                                            <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-                                                <a onClick={() => toggleExpanded(1)}>
-                                                    {isExpanded[1] ? '접기' : '더보기'}
-                                                </a>
-                                                <h6>작성자 : abc</h6>
-                                                <h6>좋아요 : like</h6>
-                                            </div>
-
-                                            <p style={{
-                                                maxHeight: isExpanded[1] ? 'none' : '100px',
-                                                overflow: 'hidden',
-                                                textAlign: 'center',
-                                                marginLeft: 0
-                                            }}>
-                                                Looking to improve your page performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.
-
-
-                                            </p>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 col-sm-6">
-                                    <div className="service-details" data-wow-delay=".1s" style={{maxHeight: '25%'}}>
-                                        <div className="service-head">
-                                            <img
-                                                src="assets/img/service/design-development.jpg"
-                                                alt="design-development"
-                                            />
-                                        </div>
-                                        <div className="service-bottom">
-
-                                            <h3>Design + Development</h3>
-                                            <div className="underline1"></div>
-                                            <div className="underline2"></div>
-                                            <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-                                                <a onClick={() => toggleExpanded(1)}>
-                                                    {isExpanded[1] ? '접기' : '더보기'}
-                                                </a>
-                                                <h6>작성자 : abc</h6>
-                                                <h6>좋아요 : like</h6>
-                                            </div>
-
-                                            <p style={{
-                                                maxHeight: isExpanded[1] ? 'none' : '100px',
-                                                overflow: 'hidden',
-                                                textAlign: 'center',
-                                                marginLeft: 0
-                                            }}>
-                                                Looking to improve your page performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.
-
-
-                                            </p>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 col-sm-6">
-                                    <div className="service-details" data-wow-delay=".1s" style={{maxHeight: '25%'}}>
-                                        <div className="service-head">
-                                            <img
-                                                src="assets/img/service/design-development.jpg"
-                                                alt="design-development"
-                                            />
-                                        </div>
-                                        <div className="service-bottom">
-
-                                            <h3>Design + Development</h3>
-                                            <div className="underline1"></div>
-                                            <div className="underline2"></div>
-                                            <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-                                                <a onClick={() => toggleExpanded(1)}>
-                                                    {isExpanded[1] ? '접기' : '더보기'}
-                                                </a>
-                                                <h6>작성자 : abc</h6>
-                                                <h6>좋아요 : like</h6>
-                                            </div>
-
-                                            <p style={{
-                                                maxHeight: isExpanded[1] ? 'none' : '100px',
-                                                overflow: 'hidden',
-                                                textAlign: 'center',
-                                                marginLeft: 0
-                                            }}>
-                                                Looking to improve your page performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.
-
-
-                                            </p>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 col-sm-6">
-                                    <div className="service-details" data-wow-delay=".1s" style={{maxHeight: '25%'}}>
-                                        <div className="service-head">
-                                            <img
-                                                src="assets/img/service/design-development.jpg"
-                                                alt="design-development"
-                                            />
-                                        </div>
-                                        <div className="service-bottom">
-
-                                            <h3>Design + Development</h3>
-                                            <div className="underline1"></div>
-                                            <div className="underline2"></div>
-                                            <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-                                                <a onClick={() => toggleExpanded(1)}>
-                                                    {isExpanded[1] ? '접기' : '더보기'}
-                                                </a>
-                                                <h6>작성자 : abc</h6>
-                                                <h6>좋아요 : like</h6>
-                                            </div>
-
-                                            <p style={{
-                                                maxHeight: isExpanded[1] ? 'none' : '100px',
-                                                overflow: 'hidden',
-                                                textAlign: 'center',
-                                                marginLeft: 0
-                                            }}>
-                                                Looking to improve your page performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.
-
-
-                                            </p>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-4 col-sm-6">
-                                    <div className="service-details" data-wow-delay=".1s" style={{maxHeight: '25%'}}>
-                                        <div className="service-head">
-                                            <img
-                                                src="assets/img/service/design-development.jpg"
-                                                alt="design-development"
-                                            />
-                                        </div>
-                                        <div className="service-bottom">
-
-                                            <h3>Design + Development</h3>
-                                            <div className="underline1"></div>
-                                            <div className="underline2"></div>
-                                            <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-                                                <a onClick={() => toggleExpanded(1)}>
-                                                    {isExpanded[1] ? '접기' : '더보기'}
-                                                </a>
-                                                <h6>작성자 : abc</h6>
-                                                <h6>좋아요 : like</h6>
-                                            </div>
-
-                                            <p style={{
-                                                maxHeight: isExpanded[1] ? 'none' : '100px',
-                                                overflow: 'hidden',
-                                                textAlign: 'center',
-                                                marginLeft: 0
-                                            }}>
-                                                Looking to improve your page performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.Looking to improve your page
-                                                performance, SEO, or user
-                                                experience? Request a free site audit.
-
-
-                                            </p>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
+                                    ))
+                                }
                             </div>
+                            <div>
+                                {
+                                    resultQue.currentPage > 1 ?
+                                        <a> [이전] </a> :
+                                        null
+                                }
+                                {
+                                    Array(resultQue.endPage - resultQue.startPage + 1).fill().map((_, index) => {
+                                        const pageNumber = resultQue.startPage + index;
+                                        return (
+                                            pageNumber === resultQue.currentPage ? (
+                                                <span className="current-page" key={pageNumber}>[{pageNumber}]</span>
+                                            ) : (
+                                                <a onClick={() => {
+                                                    setParams('/?page=' + pageNumber)
+                                                    // if (resultQue.isSuccess) {
+                                                    //     console.log('여기 확인:', resultQue.data);
+                                                    // }
 
+                                                }} key={pageNumber}>[{pageNumber}]</a>
+                                            )
+                                        );
+                                    })
+                                }
+                                {
+                                    resultQue.tatalPage - resultQue.currentPage + 1 > resultQue.maxPageNumber ?
+                                        <a>[다음]</a> : null
+                                }
+                            </div>
 
                         </div>
                     </div>
@@ -369,6 +172,7 @@ function Borader(props) {
 
                 </div>
             </div>
+            )}
 
             {/* <!-- ================================ BLOG ========================== --> */}
 
@@ -377,6 +181,7 @@ function Borader(props) {
 
 
         </div>
+
     )
 }
 

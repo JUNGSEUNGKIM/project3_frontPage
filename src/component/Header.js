@@ -1,6 +1,12 @@
 import React, {useState} from "react";
 import axios from "axios";
-
+import  {useNavigate, useParams} from "react-router-dom";
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth' // 부드럽게 스크롤
+  });
+}
 function Header(props) {
   let [toggleButton, setToggleButton] = useState(false);
   // console.log("여기야??::::",props.isLoggedIn)
@@ -17,7 +23,7 @@ function Header(props) {
         })
   }
 
-
+  const navigate = useNavigate()
   return (
 
       <div className="menubar">
@@ -27,7 +33,10 @@ function Header(props) {
               <div className="row">
                 <div className="col-md-3 col-sm-3">
                   <div className="site-title">
-                    <a href="/#home" style={{ textDecoration: "none" }}>
+                    <a  style={{ textDecoration: "none" }} onClick={()=>{
+                      navigate('/home')
+                      scrollToTop()
+                    }}>
                       <h3>GARAGE</h3>
                     </a>
                   </div>
@@ -39,7 +48,8 @@ function Header(props) {
                     data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1"
                     aria-expanded="false"
-                    onClick={()=>toggleButton?setToggleButton(false):setToggleButton(true)}
+                    onClick={()=>{toggleButton?setToggleButton(false):setToggleButton(true)
+                      }}
                   >
                     <span className="sr-only">Toggle navigation</span>
                     <span className="icon-bar"></span>
@@ -54,23 +64,37 @@ function Header(props) {
                   >
                     <ul className="nav navbar-nav">
                       <li>
-                        <a href="/home" className="active">
+                        <a onClick={()=>{
+                          scrollToTop()
+                          toggleButton?setToggleButton(false):setToggleButton(true)
+                          navigate('/home')}} className="active">
                           HOME
                         </a>
                       </li>
                       <li>
-                        <a href="/recommend">FESTIVAL</a>
+                        <a onClick={()=>{
+                          scrollToTop()
+                          toggleButton?setToggleButton(false):setToggleButton(true)
+                          navigate('/festival')}}>FESTIVAL</a>
                       </li>
                       <li>
-                        <a href="/personalized">PERSONALIZED</a>
+                        <a onClick={()=>{
+                          scrollToTop()
+                          toggleButton?setToggleButton(false):setToggleButton(true)
+                          navigate('/personalized')}}>PERSONALIZED</a>
                       </li>
                       <li>
-                        <a href="/boarder">BOARD</a>
+                        <a onClick={()=>{
+                          scrollToTop()
+                          toggleButton?setToggleButton(false):setToggleButton(true)
+                          navigate('/boarder')}}>BOARD</a>
                       </li>
                         {
                           props.isLoggedIn ? (
                               <React.Fragment>
                                   <li><a onClick={()=>{
+                                    scrollToTop()
+                                    toggleButton?setToggleButton(false):setToggleButton(true)
                                     logoutSession();
                                     props.setIsLoggedIn(false);
                                     props.setLoginId('')
@@ -78,7 +102,10 @@ function Header(props) {
                                   <li><a>{props.loginId} 님</a></li>
                               </React.Fragment>
                               ):(
-                              <li><a href="/login">LOGIN</a></li>)
+                              <li><a onClick={()=>{
+                                scrollToTop()
+                                toggleButton?setToggleButton(false):setToggleButton(true)
+                                navigate('/login')}}>LOGIN</a></li>)
                         }
                       {/*<li>*/}
                       {/*  <a href="/#blog">Blog</a>*/}

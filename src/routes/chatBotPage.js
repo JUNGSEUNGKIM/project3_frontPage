@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import App from "../App";
-import ChatIcon from './ChatIcon';
+
 import ChatWindow from './ChatWindow';
 
 
