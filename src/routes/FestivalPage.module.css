@@ -224,11 +224,16 @@ hr {
 
 .info_container {
     display: flex;
+    margin-left: 30em;
+}
+
+.info_details{
+    margin-top: 10em;
 }
 
 .details_festival_img {
     /*background-color: yellow;*/
-    margin-left: 70em;
+    margin-left: 10em;
 }
 
 .details_festival_img img{
@@ -266,10 +271,13 @@ hr {
 }
 
 .festival_buttonOverlay button {
-    background-color: #fdfd9e;
-    /*border: 2px solid black;*/
+    /*background-color: #e6f1f4;*/
+    background-color: transparent;
+    border: 0.5px solid black;
     border-radius: 15px;
+    color: #333;
     padding: 2px 8px;
+    margin: 2px;
     font-size: 14px;
     cursor: pointer;
 }

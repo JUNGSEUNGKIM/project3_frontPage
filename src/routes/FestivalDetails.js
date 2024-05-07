@@ -193,9 +193,9 @@ function FestivalDetails(props) {
                 <div className={styles.title_container}>
                     <div className={styles.main_title}>
                         <h3 style={{fontWeight:"bold"}}>{festivalData[0].FestivalName}</h3>
-                        <p style={{fontSize:"1.5rem"}}>
+                        <span style={{fontSize:"1.5rem"}}>
                             {festivalData[0].Location} ｜ {festivalData[0].StartDate} ~ {festivalData[0].EndDate}
-                        </p>
+                        </span>
                     </div>
                 </div>
 
@@ -207,9 +207,9 @@ function FestivalDetails(props) {
                         <h4 style={{fontWeight: "bold"}}>상세정보</h4>
                         <hr/>
                         <div className={styles.info_container}>
-                            <div>
-                                <p>{festivalData[0].Description}</p>
-                                &nbsp;
+                            <div className={styles.info_details}>
+                                <h5 style={{fontWeight:"bold", marginLeft:"2em"}}>{festivalData[0].Description}</h5>
+                                &nbsp;<br/>
                                 <ul>
                                     <li><span className={styles.label}>시작일:</span> &emsp;{festivalData[0].StartDate}
                                     </li>
@@ -386,14 +386,14 @@ function FestivalDetails(props) {
                                                 margin: "0 0 5% 0",
                                                 width: "95%"
                                             }}/>
-                                            <p><span
+                                            <div><span
                                                 className={styles.label}>식당주소:</span>&emsp;&emsp;&emsp; {restaurant.RESTAURANTADDRESS}
-                                            </p>
+                                            </div>
 
                                             {/* 위도와 경도를 사용하여 거리 계산 후 출력 */}
-                                            <p><span className={styles.label}>식당까지의 거리:</span>
+                                            <div><span className={styles.label}>식당까지의 거리:</span>
                                                 {calculateDistance(festivalData[0].Latitude, festivalData[0].Longitude, restaurant.LATITUDE, restaurant.LONGITUDE).toFixed(2)} km
-                                            </p>
+                                            </div>
                                         </div>
                                     ))}
                             </div>
