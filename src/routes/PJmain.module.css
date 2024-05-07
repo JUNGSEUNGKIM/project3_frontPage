@@ -36,7 +36,7 @@
 
 
 .additionalText{
-    font-size: 18px;
+    font-size: 30px;
     color: #666;
     margin-top: 10px;
 }
@@ -49,20 +49,39 @@
 }
 
 .controlBtn {
-    background: url('../routes/next.png') no-repeat;
-    background-repeat: no-repeat;
     margin-top: 300px;
-    /*background-color: transparent;*/
+    background-color: transparent;
     border: none;
     font-size: 24px;
     color: #333;
     cursor: pointer;
-    /*text-indent: -9999px;*/
-    width: 30px;
-    height: 30px;
-    /*margin: 0;*/
-    top: 186px;
-    left: -50px;
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 16px;
+}
+
+.controlBtn:hover {
+    background-color: #ddd; /* 호버 시 배경색 변경 */
+    color: black; /* 호버 시 텍스트 색상 변경 */
+}
+
+.previous,.next {
+    background-color: #f1f1f1;
+    color: black;
+    margin-top: 300px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px 10px;
+}
+
+.linkText{
+    background-color: #f1f1f1;
+    color: black;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 5px 16px;
 }
 
 .banner_img {

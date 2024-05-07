@@ -123,7 +123,7 @@ const PJmain = (props) => {
     }
     for(var i= 0; i < j ; i++){
         console.log(items)
-        items.push({id:randomFestival[i].FESTIVALID, url:props.imgURL+"/"+randomFestival[i].IMAGE_NAME.split(";")[0],main:'LOVE119',text:randomFestival[i].FESTIVALNAME,text1:'자세히 보기'})
+        items.push({id:randomFestival[i].FESTIVALID, url:props.imgURL+"/"+randomFestival[i].IMAGE_NAME.split(";")[0],main:randomFestival[i].LOCATION,text:randomFestival[i].FESTIVALNAME,text1:'자세히 보기'})
     }
 
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -202,6 +202,8 @@ const PJmain = (props) => {
         let response = await fetch(url);
         let data = await response.json();
         displayWeeklyWeather(data,locPo);
+
+        const weatherTitle = document.createElement('h3');
         // setWeather(data);
         // console.log("현재날씨는?", data);
     }
@@ -336,7 +338,7 @@ const PJmain = (props) => {
                 <div className={styles.banner_letter} >
                     <button
                         onClick={() => setCurrentIndex(currentIndex => (currentIndex - 1 + items.length) % items.length)}
-                        className={styles.controlBtn}>&lt;</button>
+                        className={styles.previous}>&lt;</button>
                     <div className={styles.banner_letter_text}>
                         <div className={styles.mainText}>{items[currentIndex].main}</div>
                         <div className={styles.additionalText} style={{minWidth:"15em"}}>{items[currentIndex].text}</div>
@@ -345,7 +347,7 @@ const PJmain = (props) => {
                         </button>
                     </div>
                     <button onClick={() => setCurrentIndex(currentIndex => (currentIndex + 1) % items.length)}
-                            className={styles.controlBtn}>&gt;</button>
+                            className={styles.next}>&gt;</button>
                 </div>
                 <div className={styles.banner_img}>
                     <SimpleSlider myProp={items} currentIndex={currentIndex}/>
