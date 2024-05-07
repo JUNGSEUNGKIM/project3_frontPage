@@ -230,7 +230,7 @@ function EventDetails() {
 
 
                     {/* 전시 지도 PART */}
-                    <div className={styles.festival_map}>
+                    <div className={styles.event_map}>
 
                         <Map
                             className={styles.map}
@@ -323,7 +323,7 @@ function EventDetails() {
                                             {/*<p><span className={styles.label}>시장이름:</span> &emsp;&emsp;&emsp;{market.MARKETNAME}</p>*/}
                                             <h4 style={{fontWeight: "bold"}}>{market.MARKETNAME}</h4>
                                             <hr style={{
-                                                border: "dashed 1px rgba(213, 233, 183, 0.76)",
+                                                border: "dashed 1px rgba(0, 0, 0, 0.2)",
                                                 margin: "0 0 5% 0",
                                                 width: "95%"
                                             }}/>
@@ -340,7 +340,9 @@ function EventDetails() {
                                     ))}
                             </div>
                         ) : (
-                            <p>근처에 시장이 없습니다.</p>
+                            <div className={styles.no_data_message}>
+                                <span>근처에 시장이 없습니다😢</span>
+                            </div>
                         )}
                         {/* 페이징 처리 */}
                         {marketAndRestaurantData.market_data && marketAndRestaurantData.market_data.length > marketItemsPerPage && (
@@ -379,7 +381,9 @@ function EventDetails() {
                                     ))}
                             </div>
                         ) : (
-                            <p>근처에 맛집이 없습니다.</p>
+                            <div className={styles.no_data_message}>
+                                <span>근처에 맛집이 없습니다😢</span>
+                            </div>
                         )}
                         {/* 페이징 처리 버튼 */}
                         {marketAndRestaurantData.yumyum_data && marketAndRestaurantData.yumyum_data.length > restaurantItemsPerPage && (

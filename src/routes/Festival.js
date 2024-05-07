@@ -157,7 +157,7 @@ function Festival(props) {
                         <h3 style={{fontWeight:"bold"}}>
                             🌼전시 보러 갈까요?🌼
                         </h3>
-                        <div style={{display: "grid", placeItems: "center"}}>
+                        <div className={styles.ModalBox} style={{display: "grid", placeItems: "center"}}>
                             {
                                 <AreaModal
                                     eventData={eventData}
@@ -236,7 +236,7 @@ function AreaModal(props) {
                     const location = locationMatch ? locationMatch[1].substring(0, 2) : '';
 
                     // 각각의 최대 글자 수 설정
-                    const eventNameMaxLength = 20; // EVENTNAME에 대한 최대 글자 수
+                    const eventNameMaxLength = 15; // EVENTNAME에 대한 최대 글자 수
                     const descriptionMaxLength = 40; // DESCRIPTION에 대한 최대 글자 수
 
                     // EVENTNAME과 DESCRIPTION의 일정 길이 이상인 경우 일부만 표시
@@ -248,10 +248,14 @@ function AreaModal(props) {
                             <span>{event.FEEINFO}</span>
                             <h4>[{location}]</h4>
                             <h4>{shortEventName}</h4>
-                            <i>{shortDescription}</i>
+                            <h5>{shortDescription}</h5>
                             {/*<a>자세히보기</a>*/}
-                            <a onClick={() => navigate(`/eventdetails/${event.EVENTID}`)}>자세히보기</a>
+                            {/*<a onClick={() => navigate(`/eventdetails/${event.EVENTID}`)}>자세히보기</a>*/}
+                            <div className={styles.detailLink}>
+                                <a onClick={() => navigate(`/eventdetails/${event.EVENTID}`)}>자세히보기</a>
+                            </div>
                         </div>
+
                     );
 
                 })}
