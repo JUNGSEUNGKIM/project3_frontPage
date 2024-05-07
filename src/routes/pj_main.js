@@ -202,8 +202,6 @@ const PJmain = (props) => {
         let response = await fetch(url);
         let data = await response.json();
         displayWeeklyWeather(data,locPo);
-
-        const weatherTitle = document.createElement('h3');
         // setWeather(data);
         // console.log("현재날씨는?", data);
     }
@@ -335,25 +333,32 @@ const PJmain = (props) => {
         <div className={styles.basics}>
 
             <div className={styles.banner}>
-                <div className={styles.banner_letter} >
+                {/*<div className={styles.banner_good}></div>*/}
+                <div className={styles.banner_letter}>
                     <button
                         onClick={() => setCurrentIndex(currentIndex => (currentIndex - 1 + items.length) % items.length)}
                         className={styles.previous}>&lt;</button>
                     <div className={styles.banner_letter_text}>
                         <div className={styles.mainText}>{items[currentIndex].main}</div>
-                        <div className={styles.additionalText} style={{minWidth:"15em"}}>{items[currentIndex].text}</div>
-                        <button onClick={() => navigate("/festivaldetails/"+items[currentIndex].id)} className={styles.linkText}>
+                        <div className={styles.additionalText}
+                             style={{minWidth: "15em"}}>{items[currentIndex].text}</div>
+                        <button onClick={() => navigate("/festivaldetails/" + items[currentIndex].id)}
+                                className={styles.linkText}>
                             {items[currentIndex].text1}
                         </button>
                     </div>
                     <button onClick={() => setCurrentIndex(currentIndex => (currentIndex + 1) % items.length)}
                             className={styles.next}>&gt;</button>
                 </div>
+                {/*<div className={styles.banner_good}></div>*/}
                 <div className={styles.banner_img}>
-                    <SimpleSlider myProp={items} currentIndex={currentIndex}/>
+                    <SimpleSlider myProp={items} currentIndex={currentIndex} className="custom-slider"/>
+
 
                 </div>
+                {/*<div className={styles.banner_good}></div>*/}
             </div>
+            <div className={styles.banner_good}></div>
             <div className={styles.btnAuto}>
             </div>
             {/*<div className={styles.best}>*/}
@@ -367,70 +372,101 @@ const PJmain = (props) => {
 
             {/* <!-- ================================ 추천 / 날씨 =============================== --> */}
 
-            <div id="resume" style={{backgroundColor:"#f1efe9"}}>
+            <div id="resume" style={{backgroundColor: "#f1efe9"}}>
 
-                        <div className="container">
+                <div className="container">
 
-                            <div className="row love-row">
-                                <div className="col-md-6 col-sm-12" style={{minHeight:"323px"}}>
-                                    <div className="exp-details" data-wow-delay=".2s" style={{minHeight:"292px",marginBottom:"30px"}}>
-                                        {/*<div className="exp-hover"></div>*/}
-                                        <div className="exp-main" style={{minHeight:"px", paddingTop:"0.9em",paddingBottom:"0"}}>
-                                            {boardHead.length===0 ? <div>''</div>
-                                                :<div>
-                                                    <p style={{textAlign:"left",margin:0}}><h3 style={{marginBottom:"0.25em",marginTop:0 }}>오늘의 인기글</h3></p>
+                    <div className="row love-row">
+                        <div className="col-md-6 col-sm-12" style={{minHeight: "323px"}}>
+                            <div className="exp-details" data-wow-delay=".2s"
+                                 style={{minHeight: "292px", marginBottom: "30px"}}>
+                                {/*<div className="exp-hover"></div>*/}
+                                <div className="exp-main"
+                                     style={{minHeight: "px", paddingTop: "0.9em", paddingBottom: "0"}}>
+                                    {boardHead.length === 0 ? <div>''</div>
+                                        : <div>
+                                            <p style={{textAlign: "left", margin: 0, fontWeight: "bold"}}><h4 style={{
+                                                marginBottom: "0.25em",
+                                                marginTop: 0,
+                                                fontFamily: "Noto Sans"
+                                            }}>오늘의 인기글</h4></p>
 
 
-                                                    {
-                                                        boardHead.map(board=>
+                                            {
+                                                boardHead.map(board =>
 
-                                                        <div class="post" style={{display: "flex", alignItems:" center", marginBottom: "0", }}>
-                                                            <div style={{flex: "1", textAlign: "left"}}>
-                                                                <p style={{fontSize: "14px", color: "#666", textAlign: "left", margin: 0 }} onClick={()=>{navigate("/detailboard/"+board[0])}}><a>{board[2]}</a></p>
-                                                                <p style={{ fontSize: "12px", color: "#999",  margin: 0, display: "flex", textAlign: "right", marginLeft: "17em"
-                                                                }}>작성자:{board[1]}게시일:{new Date(board[3]).toLocaleDateString('ko-KR', {  year: '2-digit', month: '2-digit', day: '2-digit'  })} | 좋아요: {board[6]} | 조회수: {board[5]}</p>
-                                                                <hr style={{border: "none", borderTop: "1px solid #ccc",  margin: "0" }}/>
-                                                            </div>
-
+                                                    <div class="post" style={{
+                                                        display: "flex",
+                                                        alignItems: " center",
+                                                        marginBottom: "0",
+                                                    }}>
+                                                        <div style={{flex: "1", textAlign: "left"}}>
+                                                            <p style={{
+                                                                fontSize: "14px",
+                                                                color: "#666",
+                                                                textAlign: "left",
+                                                                margin: 0
+                                                            }} onClick={() => {
+                                                                navigate("/detailboard/" + board[0])
+                                                            }}><a>{board[2]}</a></p>
+                                                            <p style={{
+                                                                fontSize: "12px",
+                                                                color: "#999",
+                                                                margin: 0,
+                                                                display: "flex",
+                                                                textAlign: "right",
+                                                                marginLeft: "17em"
+                                                            }}>작성자:{board[1]}게시일:{new Date(board[3]).toLocaleDateString('ko-KR', {
+                                                                year: '2-digit',
+                                                                month: '2-digit',
+                                                                day: '2-digit'
+                                                            })} | 좋아요: {board[6]} | 조회수: {board[5]}</p>
+                                                            <hr style={{
+                                                                border: "none",
+                                                                borderTop: "1px solid #ccc",
+                                                                margin: "0"
+                                                            }}/>
                                                         </div>
-                                                        )
-                                                    }
 
-
-                                                </div>
-
-
+                                                    </div>
+                                                )
                                             }
 
 
                                         </div>
-                                    </div>
+
+
+                                    }
+
+
                                 </div>
-                                {/* <!-- ================================ 날씨 =============================== --> */}
-                                <div className="col-md-6 col-sm-12">
-                                    <div className="exp-details" data-wow-delay=".3s">
-                                        <div className="exp-hover"></div>
-                                        <div className="exp-main">
-                                            <div className="weekly-forecast">
-
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* <!-- ================================ 날씨 =============================== --> */}
-
-
                             </div>
                         </div>
+                        {/* <!-- ================================ 날씨 =============================== --> */}
+                        <div className="col-md-6 col-sm-12">
+                            <div className="exp-details" data-wow-delay=".3s">
+                                <div className="exp-hover"></div>
+                                <div className="exp-main">
+                                    <div className="weekly-forecast">
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        {/* <!-- ================================ 날씨 =============================== --> */}
+
+
+                    </div>
+                </div>
 
             </div>
 
             {/* <!-- ================================ 추천 / 날씨 =============================== --> */}
 
 
-            <div style={{paddingBottom:"20px"}} className={styles.popular}>
+            <div style={{paddingBottom: "20px"}} className={styles.popular}>
                 <div className={styles.navigation_bar}>
                     <button
                         className={selectedOption === "festivals" ? styles.activeOption : styles.option}
@@ -465,9 +501,12 @@ const PJmain = (props) => {
                 </div>
                 <div className={styles.popular_boxes_container}>
                     {selectedOption === "festivals" && randomFestival && randomFestival.map((festival, index) => (
-                        <div key={index} className={styles.popular_box} onClick={() => navigate("/festivaldetails/"+festival.FESTIVALID)}>
+                        <div key={index} className={styles.popular_box}
+                             onClick={() => navigate("/festivaldetails/" + festival.FESTIVALID)}>
 
-                            <img src={festival.IMAGE_NAME && festival.IMAGE_NAME.split(";").length > 0 ? props.imgURL+"/"+festival.IMAGE_NAME.split(";")[0] : defaultImageUrl} alt="축제
+                            <img
+                                src={festival.IMAGE_NAME && festival.IMAGE_NAME.split(";").length > 0 ? props.imgURL + "/" + festival.IMAGE_NAME.split(";")[0] : defaultImageUrl}
+                                alt="축제
                                 이미지" className={styles.festival_image}/>
                             <div className={styles.festival_info}>
                                 <p className={styles.festival_name}>{festival.FESTIVALNAME}</p>
@@ -485,9 +524,14 @@ const PJmain = (props) => {
 
                 </div>
                 {selectedOption === "festivals" && (
-                    <button onClick={handleRandomFestival} className={styles.randomButton}>
-                        랜덤 축제 보기
-                    </button>
+                    <div>
+                        <button onClick={handleRandomFestival} className={styles.randomButton}>
+                            ＠랜덤 축제 보기
+                        </button>
+                        <button onClick={() => navigate("/personalized")} className={styles.moreButton}>
+                            더보기
+                        </button>
+                    </div>
                 )}
             </div>
             {/*{randomMarket}*/}
