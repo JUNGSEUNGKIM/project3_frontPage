@@ -23,7 +23,7 @@ function DetailBoard(props) {
     const {code} = useParams()
 
     const fetchData = async () => {
-        const result = await axios.get(props.serverURL+'/boarddetail/'+code, { withCredentials: true });
+        const result = await axios.get(props.serverURL+'/boarddetail/'+code,{params:{user_id:props.loginId}}, { withCredentials: true });
         setResultQue(result.data);
         resultQue ? setTrueResult(true) : setTrueResult(false)
         console.log(result.data)
@@ -67,7 +67,8 @@ function DetailBoard(props) {
         const response = axios.post(props.serverURL+"/boardedit",{
             boarder_code : resultQue.board.board_code,
             title : upTitle,
-            content : upText
+            content : upText,
+            user_id:props.loginId
         },{withCredentials:true})
         fetchData();
         if(response){setUpDateTX(true); fetchData();}else{alert("다시 입력해 주세요")}
@@ -401,7 +402,7 @@ function DetailBoard(props) {
     )
     function editCommentUp(code){
         try{
-            axios.post(props.serverURL+'/editcomment/'+code,{boarder_code:resultQue.board.boarder_code,content:commentTexts[code]},{withCredentials:true})
+            axios.post(props.serverURL+'/editcomment/'+code,{boarder_code:resultQue.board.boarder_code,content:commentTexts[code],user_id:props.loginId},{withCredentials:true})
                 .then((res)=>{
                     if (res.data.result) {
                         alert("수정완료");
