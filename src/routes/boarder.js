@@ -152,10 +152,12 @@ function Borader(props){
                                 {
                                     resultQue.currentPage > 1 ?
                                         <a style={{
-                                            background:`url("https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.flaticon.com%2Ficons%2Fpng%2F512%2F60%2F60602.png&type=sc960_832")`,
-                                            backgroundSize: "10px auto",
-
-
+                                            background:`url("./이전화살표.png")`,
+                                            backgroundSize: "cover",
+                                            padding:"4px 9px",
+                                            fontSize:"20px",
+                                            border:"solid gray 1px",
+                                            color:"black"
                                         }}> &lt; </a> :
                                         null
                                 }
