@@ -161,7 +161,7 @@ function Festival(props) {
                             {
                                 <AreaModal
                                     eventData={eventData}
-                                    // selectedZone={selectedZone}
+                                    selectedZone={selectedZone}
                                 />
                             }
                         </div>
@@ -187,19 +187,6 @@ function Festival(props) {
                     </div>
 
                 </div>
-
-
-                    {/* 키워드 추천 */}
-                    {/*<div className={styles.festival_keyword}>*/}
-                    {/*    <p>키워드별 축제 추천</p>*/}
-                    {/*   */}
-                    {/*</div>*/}
-
-
-                    {/*/!* 인스타 업로드 인기순*!/*/}
-                    {/*<div className={styles.festival_insta}>*/}
-                    {/*    <p>인스타인기순</p>*/}
-                    {/*</div>*/}
 
                 </div>
 

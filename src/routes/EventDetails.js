@@ -14,7 +14,7 @@ function EventDetails() {
 
     const { EVENTID}  = useParams();
     const [eventData, setEventData] = useState([]);
-    const [marketAndRestaurantData, setMarketAndRestaurantData] = useState([]);
+    const [marketAndRestaurantData, setMarketAndRestaurantData] = useState({ market_data: [], yumyum_data: [] });
     const [loading, setLoading] = useState(true);
     // console.log("EVENTID::::",EVENTID)
 
@@ -91,39 +91,39 @@ function EventDetails() {
 
     const imageSize = { width: 28, height: 29 }
     const spriteSize = { width: 36, height: 98 }
-    //
-    // const [selectedCategory, setSelectedCategory] = useState("event")
-    //
-    // useEffect(() => {
-    //     const eventMenu = document.getElementById("eventMenu")
-    //     const marketMenu = document.getElementById("marketMenu")
-    //     const restaurantMenu = document.getElementById("restaurantMenu")
-    //
-    //     if (eventMenu && marketMenu && restaurantMenu) { // DOM 요소가 준비되었을 때만 실행
-    //         if (selectedCategory === "event") {
-    //             // 전시 카테고리를 선택된 스타일로 변경
-    //             eventMenu.className = "menu_selected"
-    //
-    //             // 시장과 맛집 카테고리는 선택되지 않은 스타일로 바꿉니다
-    //             marketMenu.className = ""
-    //             restaurantMenu.className = ""
-    //         } else if (selectedCategory === "market") {
-    //             // 시장 카테고리가 클릭됐을 때
-    //
-    //             // 시장 카테고리를 선택된 스타일로 변경하고
-    //             eventMenu.className = ""
-    //             marketMenu.className = "menu_selected"
-    //             restaurantMenu.className = ""
-    //         } else if (selectedCategory === "restaurant") {
-    //             // 맛집 카테고리가 클릭됐을 때
-    //
-    //             // 맛집 카테고리를 선택된 스타일로 변경하고
-    //             eventMenu.className = ""
-    //             marketMenu.className = ""
-    //             restaurantMenu.className = "menu_selected"
-    //         }
-    //     }
-    // }, [])
+
+    const [selectedCategory, setSelectedCategory] = useState("event")
+
+    useEffect(() => {
+        const eventMenu = document.getElementById("eventMenu")
+        const marketMenu = document.getElementById("marketMenu")
+        const restaurantMenu = document.getElementById("restaurantMenu")
+
+        if (eventMenu && marketMenu && restaurantMenu) { // DOM 요소가 준비되었을 때만 실행
+            if (selectedCategory === "event") {
+                // 전시 카테고리를 선택된 스타일로 변경
+                eventMenu.className = "menu_selected"
+
+                // 시장과 맛집 카테고리는 선택되지 않은 스타일로 바꿉니다
+                marketMenu.className = ""
+                restaurantMenu.className = ""
+            } else if (selectedCategory === "market") {
+                // 시장 카테고리가 클릭됐을 때
+
+                // 시장 카테고리를 선택된 스타일로 변경하고
+                eventMenu.className = ""
+                marketMenu.className = "menu_selected"
+                restaurantMenu.className = ""
+            } else if (selectedCategory === "restaurant") {
+                // 맛집 카테고리가 클릭됐을 때
+
+                // 맛집 카테고리를 선택된 스타일로 변경하고
+                eventMenu.className = ""
+                marketMenu.className = ""
+                restaurantMenu.className = "menu_selected"
+            }
+        }
+    }, [])
 
     // console.log("festivalData::::", festivalData);
     // console.log("FestivalDataInfo::::", festivalData[0]);
@@ -136,7 +136,7 @@ function EventDetails() {
     }
 
 
-    /// 축제장소와 맛집 사이의 거리를 계산하는 함수(직선거리)
+    /// 전시장소와 맛집/시장 사이의 거리를 계산하는 함수(직선거리)
     const calculateDistance = (lat1, lon1, lat2, lon2) => {
         const R = 6371; // 지구의 반지름 (단위: km)
         const dLat = toRad(lat2 - lat1);
@@ -149,43 +149,43 @@ function EventDetails() {
         return distance;
     };
 
-    // 지도 마커표시
-
-    //  마커가 표시될 좌표 배열입니다
-    // const festivalPositions = {
-    // {lat: festivalData[0].Latitude, lng: festivalData[0].Longitude}
-    // }
-    const eventOrigin = { x: 1, y: 0 }
-
-    // // 시장 마커가 표시될 좌표
-    // const marketPositions =
-    //     marketAndRestaurantData.market_data.map(market => ({
-    //         lat: market.LATITUDE,
-    //         lng: market.LONGITUDE
-    //     }));
-    //
-    // const marketOrigin = { x: 1, y: 34 }
-
-    // // 맛집 마커가 표시될 좌표
-    // const restaurantPositions = marketAndRestaurantData.yumyum_data.map(restaurant => ({
-    //     lat: restaurant.LATITUDE,
-    //     lng: restaurant.LONGITUDE
-    // }));
-    // const restaurantOrigin = { x: 1, y: 69 }
-    //
-    // const handleCategoryClick = (category) => {
-    //     setSelectedCategory(category);
-    // };
-
     const toRad = (value) => {
         return (value * Math.PI) / 180;
     };
 
+
+    // 지도 마커표시
+
+    //  마커가 표시될 좌표 배열입니다
+    const eventOrigin = { x: 1, y: 0 }
+
+    // 시장 마커가 표시될 좌표
+    const marketPositions =
+        marketAndRestaurantData.market_data.map(market => ({
+            lat: market.LATITUDE,
+            lng: market.LONGITUDE
+        }));
+
+    const marketOrigin = { x: 1, y: 34 }
+
+    // 맛집 마커가 표시될 좌표
+    const restaurantPositions = marketAndRestaurantData.yumyum_data.map(restaurant => ({
+        lat: restaurant.LATITUDE,
+        lng: restaurant.LONGITUDE
+    }));
+    const restaurantOrigin = { x: 1, y: 69 }
+
+    const handleCategoryClick = (category) => {
+        setSelectedCategory(category);
+    };
+
+
+
+    // 날짜 포멧 변경
     const startDate = new Date(eventData[0].STARTDATE);
     const endDate = new Date(eventData[0].ENDDATE);
     const formattedStartDate = startDate.toLocaleDateString(); // "2024-08-29"
     const formattedEndDate = endDate.toLocaleDateString();
-
 
 
 
@@ -243,19 +243,19 @@ function EventDetails() {
                         >
                             <div className={styles.event_buttonOverlay}>
                                 <div className="category" style={{marginTop: "-80px"}}>
-                                    {/*<button id={styles.marketMenu} onClick={() => handleCategoryClick("market")}>*/}
-                                    {/*    <span className="ico_comm ico_store"></span>*/}
-                                    {/*    시장*/}
-                                    {/*</button>*/}
-                                    {/*<button id={styles.restaurantMenu}*/}
-                                    {/*        onClick={() => handleCategoryClick("restaurant")}>*/}
-                                    {/*    <span className="ico_comm ico_carpark"></span>*/}
-                                    {/*    맛집*/}
-                                    {/*</button>*/}
-                                    {/*<button onClick={() => handleCategoryClick("event")}>*/}
-                                    {/*    <span className="ico_comm ico_event"></span>*/}
-                                    {/*    축제만보기*/}
-                                    {/*</button>*/}
+                                    <button id={styles.marketMenu} onClick={() => handleCategoryClick("market")}>
+                                        <span className="ico_comm ico_store"></span>
+                                        시장
+                                    </button>
+                                    <button id={styles.restaurantMenu}
+                                            onClick={() => handleCategoryClick("restaurant")}>
+                                        <span className="ico_comm ico_carpark"></span>
+                                        맛집
+                                    </button>
+                                    <button onClick={() => handleCategoryClick("event")}>
+                                        <span className="ico_comm ico_event"></span>
+                                        축제만보기
+                                    </button>
                                 </div>
                                 <button onClick={() => setZoomable(prevZoomable => !prevZoomable)}>
                                     {zoomable ? '확대/축소 끄기' : '확대/축소 켜기'}
@@ -276,37 +276,37 @@ function EventDetails() {
                                 }}
                             />
 
-                            {/*{selectedCategory === "market" &&*/}
-                            {/*        marketPositions.map((position) => (*/}
-                            {/*        <MapMarker*/}
-                            {/*            key={`market-${position.lat},${position.lng}`}*/}
-                            {/*            position={position}*/}
-                            {/*            image={{*/}
-                            {/*                src: markerImageSrc,*/}
-                            {/*                size: imageSize,*/}
-                            {/*                options: {*/}
-                            {/*                    spriteSize: spriteSize,*/}
-                            {/*                    spriteOrigin: marketOrigin,*/}
-                            {/*                },*/}
-                            {/*            }}*/}
-                            {/*        />*/}
-                            {/*    ))*/}
-                        {/*}*/}
-                            {/*{selectedCategory === "restaurant" &&*/}
-                            {/*    restaurantPositions.map((position) => (*/}
-                            {/*        <MapMarker*/}
-                            {/*            key={`restaurant-${position.lat},${position.lng}`}*/}
-                            {/*            position={position}*/}
-                            {/*            image={{*/}
-                            {/*                src: markerImageSrc,*/}
-                            {/*                size: imageSize,*/}
-                            {/*                options: {*/}
-                            {/*                    spriteSize: spriteSize,*/}
-                            {/*                    spriteOrigin: restaurantOrigin,*/}
-                            {/*                },*/}
-                            {/*            }}*/}
-                            {/*        />*/}
-                            {/*    ))}*/}
+                            {selectedCategory === "market" &&
+                                    marketPositions.map((position) => (
+                                    <MapMarker
+                                        key={`market-${position.lat},${position.lng}`}
+                                        position={position}
+                                        image={{
+                                            src: markerImageSrc,
+                                            size: imageSize,
+                                            options: {
+                                                spriteSize: spriteSize,
+                                                spriteOrigin: marketOrigin,
+                                            },
+                                        }}
+                                    />
+                                ))
+                        }
+                            {selectedCategory === "restaurant" &&
+                                restaurantPositions.map((position) => (
+                                    <MapMarker
+                                        key={`restaurant-${position.lat},${position.lng}`}
+                                        position={position}
+                                        image={{
+                                            src: markerImageSrc,
+                                            size: imageSize,
+                                            options: {
+                                                spriteSize: spriteSize,
+                                                spriteOrigin: restaurantOrigin,
+                                            },
+                                        }}
+                                    />
+                                ))}
                         </Map>
 
 

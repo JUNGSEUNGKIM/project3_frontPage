@@ -139,7 +139,7 @@ function FestivalDetails(props) {
 
 
 
-    ///// 축제장소와 맛집 사이의 거리를 계산하는 함수(직선거리)
+    ///// 축제장소와 맛집/시장 사이의 거리를 계산하는 함수(직선거리)
     const calculateDistance = (lat1, lon1, lat2, lon2) => {
         const R = 6371; // 지구의 반지름 (단위: km)
         const dLat = toRad(lat2 - lat1);
@@ -307,20 +307,20 @@ function FestivalDetails(props) {
                                     />
                                 ))}
                         </Map>
-                        <div className="category" style={{marginTop: "-50px"}}>
-                            {/*<button id={styles.festivalMenu} onClick={() => handleCategoryClick("festival")}>*/}
-                            {/*    <span className="ico_comm ico_coffee"></span>*/}
-                            {/*    축제*/}
-                            {/*</button>*/}
-                            <button id={styles.marketMenu} onClick={() => handleCategoryClick("market")}>
-                                <span className="ico_comm ico_store"></span>
-                                시장
-                            </button>
-                            <button id={styles.restaurantMenu} onClick={() => handleCategoryClick("restaurant")}>
-                                <span className="ico_comm ico_carpark"></span>
-                                맛집
-                            </button>
-                        </div>
+                        {/*<div className="category" style={{marginTop: "-50px"}}>*/}
+                        {/*    /!*<button id={styles.festivalMenu} onClick={() => handleCategoryClick("festival")}>*!/*/}
+                        {/*    /!*    <span className="ico_comm ico_coffee"></span>*!/*/}
+                        {/*    /!*    축제*!/*/}
+                        {/*    /!*</button>*!/*/}
+                        {/*    <button id={styles.marketMenu} onClick={() => handleCategoryClick("market")}>*/}
+                        {/*        <span className="ico_comm ico_store"></span>*/}
+                        {/*        시장*/}
+                        {/*    </button>*/}
+                        {/*    <button id={styles.restaurantMenu} onClick={() => handleCategoryClick("restaurant")}>*/}
+                        {/*        <span className="ico_comm ico_carpark"></span>*/}
+                        {/*        맛집*/}
+                        {/*    </button>*/}
+                        {/*</div>*/}
                     </div>
 
 
