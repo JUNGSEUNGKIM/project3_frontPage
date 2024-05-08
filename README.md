@@ -5,10 +5,10 @@
     
  |  이름  | 백엔드(주요 프레임워크) | 개발환경 | DataBase | 프론트엔드 
 |--------|---------------------|-------------------------------|-----------------------------|-----------------------------|
-| 김정승 |    nodejs, Nginx, ejs    |    IntelliJ IDEA , vim      | oracle 11g | HTML, javascript, css, React|
-| 노가현 |    nodejs, Nginx, ejs    |    IntelliJ IDEA , vim      | oracle 11g | HTML, javascript, css, React|
-| 배호진 |    nodejs, Nginx, ejs    |    IntelliJ IDEA , vim      | oracle 11g | HTML, javascript, css, React|
-| 배은지 |    nodejs, Nginx, ejs    |    IntelliJ IDEA , vim      | oracle 11g | HTML, javascript, css, React|
+| 김정승 |    nodejs, Nginx, python    |    IntelliJ IDEA , vim      | oracle 11g | HTML, javascript, css, React|
+| 노가현 |    nodejs, Nginx, python    |    IntelliJ IDEA , vim      | oracle 11g | HTML, javascript, css, React|
+| 배호진 |    nodejs, Nginx, python    |    IntelliJ IDEA , vim      | oracle 11g | HTML, javascript, css, React|
+| 배은지 |    nodejs, Nginx, python    |    IntelliJ IDEA , vim      | oracle 11g | HTML, javascript, css, React|
 
 <a href="https://github.com/JUNGSEUNGKIM/codelap_allola/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=JUNGSEUNGKIM/codelap_allola" />
@@ -27,9 +27,6 @@
 + 주제 :  대한민국 구석구석 축제, 공연, 맛집을 소개하며 국내 여행 코스를 편하게 제공, 유저들끼리 소통할 수 있는 웹 서비스 제작
 + 선정이유 : 기존 한공광관공사에서 운영하고 있는 사이트(구석구석)을 분석하여, 보완할 부분을 찾아 제작 선정
 + 보완점 : 주변 시장, 맛집도 함께 제공하여 사용자들과 소통할 수 있는 게시판 구성
-
----
-### 워크플로우
 
 ---
 ### 담당업무
@@ -65,6 +62,10 @@
   +  필요한 실데이터 수집 및 import
   +  시장,축제,맛집 데이터 필터링 기능 제공
     
+---
+### 이미지첨부
+![텍스트](KakaoTalk_20240507_130147815.png)
+
 ---
 ### 주요기능 
 * 김정승 -
