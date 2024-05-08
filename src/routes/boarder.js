@@ -24,7 +24,7 @@ function Borader(props){
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios.get(props.serverURL+'/boardmain'+params, { withCredentials: true });
+            const result = await axios.get(props.serverURL+'/boardmain'+params,{params:{user_id:props.loginId}}, { withCredentials: true });
             setResultQue(result.data);
             resultQue ? setTrueResult(true) : setTrueResult(false)
             console.log(result.data)

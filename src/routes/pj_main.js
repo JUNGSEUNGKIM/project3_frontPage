@@ -318,7 +318,7 @@ const PJmain = (props) => {
     let [boardHead,setBoardHead]=useState([])
 
     useEffect(() => {
-        axios.get(props.serverURL + "/main", { withCredentials: true })
+        axios.get(props.serverURL + "/main",{params:{user_id:props.loginId}}, { withCredentials: true })
             .then(response => {
                 setBoardHead(response.data.result);
                 // console.log("::::::main??", response.data.result);
