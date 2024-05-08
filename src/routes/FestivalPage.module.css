@@ -20,15 +20,6 @@
     background-color: white;
 }
 
-.no_data_message {
-    display: flex;
-    justify-content: center; /* 수평 가운데 정렬 */
-    align-items: center; /* 수직 가운데 정렬 */
-    height: 100%;
-    /*font-weight: bold;*/
-    font-size: 1.5rem;
-}
-
 
 /* ##################### Festival ##################### */
 #festivalPage, #festival_details {
@@ -210,7 +201,7 @@
 .info_box {
     /*background-color: yellow;*/
     width: 90%;
-    height: 80%;
+    height: 100%;
     display: inline-block;
     /*align-items: center;*/
 }
@@ -225,8 +216,13 @@
 #info_slide {
     max-width: 100%;
     max-height: 100%;
+    height: 40em;
     border: 2px solid rgba(241, 220, 104, 0.32);
     border-radius:15px;
+
+    @media screen and (max-width: 768px) {
+        height: unset;
+    }
 }
 
 .festival_keyword{
@@ -243,6 +239,36 @@
 
 
 /* ##################### FestivalDetails ##################### */
+
+@media screen and (max-width: 768px) {
+    .festival_buttonOverlay {
+        left: unset !important;
+        right: -49rem;
+    }
+
+    .info_container {
+        margin-left: unset !important;
+    }
+
+    .details_festival_info {
+        justify-content: center; /* 수평 가운데 정렬 */
+    }
+
+    .details_festival_img {
+        margin: 0 auto !important;
+        justify-content: center; /* 수평 가운데 정렬 */
+    }
+
+    .details_festival_img img{
+        max-width: 300px; /* 이미지의 최대 너비 지정 */
+        width: 100%; /* 너비를 100%로 지정하여 부모 요소에 맞게 조정 */
+        height: auto; /* 세로 크기를 가로 크기에 비례하여 자동으로 조정 */
+        justify-content: center; /* 수평 가운데 정렬 */
+    }
+
+
+}
+
 #festival_details {
     width: 100%;
     background-color: white;
@@ -264,6 +290,15 @@
     padding-bottom: 20px;
     display: grid;
     place-items: center;
+}
+
+.festival_no_data_message {
+    display: flex;
+    justify-content: center; /* 수평 가운데 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+    height: 100%;
+    /*font-weight: bold;*/
+    font-size: 2rem;
 }
 
 .details_festival_info, .festival_map, .regional_market, .regional_yumyum, .details_insta {
@@ -330,16 +365,16 @@ hr {
     /*padding: 35px;*/
     position: relative;
     top: 10px;
-    left:  1500px;
+    left: 108em;
     z-index: 1;
 }
 
 .festival_buttonOverlay button {
-    background-color: #ffffff;
+    background-color: #fcf4d7;
     border: none;
     border-radius: 15px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-    color: #333;
+    /*color: #333;*/
     padding: 2px 8px;
     margin: 2px;
     font-size: 14px;
@@ -348,7 +383,7 @@ hr {
 }
 
 .festival_buttonOverlay button:hover {
-    background-color: #ddd;
+    background-color: #d4e1ce;
 }
 
 #mapwrap{position:relative;overflow:hidden;}
@@ -365,6 +400,24 @@ hr {
     /*background-color: rgb(230, 241, 244);*/
     text-align: left;
     padding: 20px 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.regional_market button {
+    background-color: rgba(211, 180, 137, 0.18);
+    border-radius: 5px;
+    border: none;
+    font-weight: 600;
+    color: #595959;
+    justify-content: space-between;
+    padding: 0.3em 0.5em;
+    margin: 3px;
+    margin-left: 1em;
+}
+
+.regional_market button:hover {
+    background-color: rgba(117, 157, 108, 0.15);
 }
 
 .market_container {
@@ -380,8 +433,14 @@ hr {
     background-color: rgba(255, 255, 255, 0.92);
     /*border: 2px solid black;*/
     border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
     padding: 2% 0 2% 1%;
+
+    @media screen and (max-width: 768px) {
+        width: 90%;
+        margin: 3em auto;
+        padding: 2em;
+    }
 }
 
 .regional_yumyum{
@@ -390,6 +449,24 @@ hr {
     /*border-radius: 15px;*/
     text-align: left;
     padding: 20px 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.regional_yumyum button {
+    background-color: rgba(211, 180, 137, 0.18);
+    border-radius: 5px;
+    border: none;
+    font-weight: 600;
+    color: #595959;
+    justify-content: space-between;
+    padding: 0.3em 0.5em;
+    margin: 3px;
+    margin-left: 1em;
+}
+
+.regional_yumyum button:hover {
+    background-color: rgba(117, 157, 108, 0.15);
 }
 
 .restaurant_container {
@@ -405,8 +482,14 @@ hr {
     background-color: rgba(255, 255, 255, 0.92);
     /*border: 2px solid black;*/
     border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
     padding: 2% 0 2% 1%;
+
+    @media screen and (max-width: 768px) {
+        width: 90%;
+        margin: 3em auto;
+        padding: 2em;
+    }
 }
 
 .details_insta{
@@ -416,6 +499,48 @@ hr {
 
 /* ##################### EventDetails ##################### */
 
+@media screen and (max-width: 768px) {
+    .event_buttonOverlay {
+        left: unset !important;
+        /*top: 5em;*/
+        /*right: -48rem;*/
+        display: none;
+    }
+
+    /*.info_container {*/
+    /*    margin-left: unset !important;*/
+    /*}*/
+
+    /*.details_festival_info {*/
+    /*    justify-content: center; !* 수평 가운데 정렬 *!*/
+    /*}*/
+
+    /*.details_festival_img {*/
+    /*    margin: 0 auto !important;*/
+    /*    justify-content: center; !* 수평 가운데 정렬 *!*/
+    /*}*/
+
+    /*.details_festival_img img{*/
+    /*    max-width: 300px; !* 이미지의 최대 너비 지정 *!*/
+    /*    width: 100%; !* 너비를 100%로 지정하여 부모 요소에 맞게 조정 *!*/
+    /*    height: auto; !* 세로 크기를 가로 크기에 비례하여 자동으로 조정 *!*/
+    /*    justify-content: center; !* 수평 가운데 정렬 *!*/
+    /*}*/
+}
+
+#events_details {
+    width: 100%;
+    background-color: white;
+    margin-top: 0px;
+    position: relative;
+}
+
+.event_details_container {
+    width: 100%;
+    background-color: white;
+    margin-top: 0px;
+    position: relative;
+}
 
 /* CONTENT */
 .details_content {
@@ -425,6 +550,15 @@ hr {
     place-items: center;
 }
 
+.event_no_data_message {
+    display: flex;
+    justify-content: center; /* 수평 가운데 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+    height: 100%;
+    /*font-weight: bold;*/
+    font-size: 2rem;
+}
+
 .details_event_info, .event_map, .event_regional_market, .event_regional_yumyum {
     width: 90%;
     height: 30em;
@@ -432,7 +566,10 @@ hr {
 }
 
 .details_event_info {
-    background-color: rgba(206, 137, 174, 0.2);
+    /*background-color: rgba(206, 137, 174, 0.2);*/
+    background-color: white;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
     height: 25em;
     text-align: left;
     padding: 20px 20px;
@@ -443,7 +580,7 @@ hr {
 }
 
 .festival_map{
-    background-color: #2ecc71;
+    /*background-color: #2ecc71;*/
 }
 
 .mapContainer{
@@ -465,18 +602,43 @@ hr {
 }
 
 .event_buttonOverlay button {
-    background-color: #fdfd9e;
-    /*border: 2px solid black;*/
+    background-color: #f0eee8;
+    border: none;
     border-radius: 15px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    color: #333;
     padding: 2px 8px;
+    margin: 2px;
     font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
 }
 
+.event_buttonOverlay button:hover {
+    background-color: #ddd;
+}
+
 .event_regional_market{
-    background-color: rgb(230, 241, 244);
+    /*background-color: rgb(230, 241, 244);*/
     text-align: left;
     padding: 20px 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.event_regional_market button {
+    background-color: rgba(213, 133, 18, 0.18);
+    border-radius: 5px;
+    border: none;
+    font-weight: 600;
+    justify-content: space-between;
+    padding: 0.5em 0.8em;
+    margin: 3px;
+    margin-left: 1em;
+}
+
+.event_regional_market button:hover {
+    background-color: rgba(41, 122, 21, 0.15);
 }
 
 .event_market_container {
@@ -491,16 +653,33 @@ hr {
     width: 35em;
     background-color: rgba(255, 255, 255, 0.92);
     /*border: 2px solid black;*/
-    border-radius: 15px;
+    border-radius: 10px;
     padding: 2% 0 2% 1%;
 }
 
 .event_regional_yumyum{
-    background-color: rgba(213, 233, 183, 0.76);
+    /*background-color: rgba(213, 233, 183, 0.76);*/
     /*border:  2px solid #fdfd9e;*/
     /*border-radius: 15px;*/
     text-align: left;
     padding: 20px 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.event_regional_yumyum button {
+    background-color: rgba(213, 133, 18, 0.18);
+    border-radius: 5px;
+    border: none;
+    font-weight: 600;
+    justify-content: space-between;
+    padding: 0.5em 0.8em;
+    margin: 3px;
+    margin-left: 1em;
+}
+
+.event_regional_yumyum button:hover {
+    background-color: rgba(41, 122, 21, 0.15);
 }
 
 .event_restaurant_container {

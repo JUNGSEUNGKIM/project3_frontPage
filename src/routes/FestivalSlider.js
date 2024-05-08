@@ -1,11 +1,9 @@
-import React, {Component, useState} from "react";
+import React, {useState} from "react";
 import styled from 'styled-components';
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import {useNavigate} from "react-router-dom";
-import {Nav} from "react-bootstrap";
-import FestivalDetails from "./FestivalDetails";
 
 
 const Container = styled.div`
@@ -25,35 +23,65 @@ const StyledSlider = styled(Slider)`
 `;
 
 const ImageContainer = styled.div`
-    margin: 0 auto;
+    //margin: 0 auto;
     position: relative;  
-    overflow: hidden;    
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    min-width: 200px; /* 최소 너비 설정 */
+    min-height: 200px; /* 최소 높이 설정 */
 `;
 
 const Image = styled.img`
+    height: 500px;
     max-width:100%;
     max-height:100%;
     padding: 10%;
+    object-fit: cover;
+
+    @media screen and (max-width: 768px) {
+        width: unset;
+        //height: unset;
+        //max-width:100%;
+        //max-height:100%;
+        //padding: 10%;
+    }
 `;
 
 const InfoOverlay = styled.div`
     position: absolute;
-    top: 0;
+    bottom: ${props => props.show ? '0' : '-100%'};
+    //top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     //display: none;
-    display: ${props => props.show ? 'flex' : 'none'}; /* props에 따라 보이도록 설정 */
+    display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    transition: bottom 0.3s ease;
 `;
 
 const InfoText = styled.div`
     color: white;
-    font-size: 16px;
+    font-size: 1.4rem;
     text-align: center;
+    
+    h3{
+        margin-bottom: 2rem;
+    }
+
+    @media screen and (max-width: 768px) {
+        h3 {
+            font-size: 14px;
+        }
+        
+        span {
+            font-size: 1.2rem;
+        }
+    }
 `;
 
 const LinkButton = styled.button`
@@ -70,6 +98,13 @@ const LinkButton = styled.button`
     width: 80px; /* 버튼 너비 */
     height: 80px; /* 버튼 높이 */
     font-size: 1.5rem; /* 텍스트 크기 */
+
+    @media screen and (max-width: 768px) {
+        width: 50px;
+        height: 50px;
+        font-size: 1rem;
+        margin-top: 10px;
+    }
 `;
 
 
@@ -95,8 +130,16 @@ const FestivalSlider = ( myProp ) => {
         slidesToScroll: 1,
         arrows: true,
         centerMode: false,
+        responsive: [
+            {
+                breakpoint: 768, // 모바일 환경에서 적용할 breakpoint
+                settings: {
+                    slidesToShow: 2 // 모바일 환경에서는 2개의 슬라이드만 보이도록 설정
+                }
+            }
+        ]
     };
-        console.log("myProp:::",myProp)
+        // console.log("myProp:::",myProp)
 
         return (
             <Container>
@@ -112,15 +155,15 @@ const FestivalSlider = ( myProp ) => {
                                 >
                                     <ImageContainer>
 
-                                        <Image src={myProp.imgURL+"/"+festival.ImageName.split(";")[0]} style={{margin:'0 auto',minHeight:"100%"}}/>
+                                        <Image src={myProp.imgURL+"/"+festival.ImageName.split(";")[0]}/>
                                             <InfoOverlay show={hoveredFestivalId  === festival.FestivalID}>
                                                 <InfoText>
                                                     {/*{overlayContent.zone}*/}
                                                     <h3>{festival.FestivalName}</h3>
-                                                    <span style={{fontSize: '1.4rem'}}>
+                                                    <span>
                                                         {festival.RoadAddress === "주소 X" ? festival.JibunAddress : festival.RoadAddress}
                                                     </span><br/>
-                                                    <span style={{fontSize: '1.2rem'}}>
+                                                    <span>
                                                         {festival.StartDate}~{festival.EndDate}
                                                     </span><br/>
                                                     {/*<a href={`/festivaldetails/${festival.FestivalID}`}><LinkButton>자세히보기</LinkButton></a>*/}
@@ -138,7 +181,16 @@ const FestivalSlider = ( myProp ) => {
                         })}
                     </StyledSlider>
                 ) : (
-                    <span>진행중인 축제가 없습니다.</span>
+                    <div style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        height: "100%",
+                        fontWeight:"500",
+                        fontSize: "2rem",
+                        marginBottom: "1em"
+                    }}>
+                        <span>진행중인 축제가 없습니다.</span>
+                    </div>
                 )}
             </Container>
         );

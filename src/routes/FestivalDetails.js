@@ -4,9 +4,10 @@ import styles from './FestivalPage.module.css';
 import axios from "axios";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 
-// const itemsPerPage = 5;
-const marketItemsPerPage = 3; // 주변시장 페이지당 아이템 개수
-const restaurantItemsPerPage = 3; // 주변맛집 페이지당 아이템 개수
+// const marketItemsPerPage = 3; // 주변시장 페이지당 아이템 개수
+// const restaurantItemsPerPage = 3; // 주변맛집 페이지당 아이템 개수
+const marketItemsPerPage = window.innerWidth <= 768 ? 1 : 3;
+const restaurantItemsPerPage =window.innerWidth <= 768 ? 1 : 3;
 
 function FestivalDetails(props) {
 
@@ -62,7 +63,7 @@ function FestivalDetails(props) {
         const fetchGarageData = async () => {
             try {
                 const garageDataResponse = await axios.get(`http://localhost:5000/garage_data`, {
-                    params: { festival_id: FestivalID }
+                    params: { id: FestivalID }
                 });
                 setMarketAndRestaurantData(garageDataResponse.data);
                 setLoading(false);
@@ -328,7 +329,7 @@ function FestivalDetails(props) {
                         <h4 style={{fontWeight: "bold"}}>주변시장</h4>
                         <hr/>
                         {!marketAndRestaurantData.market_data || marketAndRestaurantData.market_data.length === 0 ? (
-                            <div className={styles.no_data_message}>
+                            <div className={styles.festival_no_data_message}>
                                 <span>근처에 시장이 없습니다😢</span>
                             </div>
                         ) : (
@@ -340,7 +341,7 @@ function FestivalDetails(props) {
                                             {/*<p><span className={styles.label}>시장이름:</span> &emsp;&emsp;&emsp;{market.MARKETNAME}</p>*/}
                                             <h4 style={{fontWeight: "bold"}}>{market.MARKETNAME}</h4>
                                             <hr style={{
-                                                border: "dashed 1px rgba(213, 233, 183, 0.76)",
+                                                border: "dashed 1px lightgray",
                                                 margin: "0 0 5% 0",
                                                 width: "95%"
                                             }}/>
@@ -374,7 +375,7 @@ function FestivalDetails(props) {
                         <h4 style={{fontWeight: "bold"}}>주변맛집</h4>
                         <hr/>
                         {!marketAndRestaurantData.yumyum_data || marketAndRestaurantData.yumyum_data.length === 0 ? (
-                            <div className={styles.no_data_message}>
+                            <div className={styles.festival_no_data_message}>
                                 <span>근처에 맛집이 없습니다😢</span>
                             </div>
                         ) : (
@@ -386,7 +387,7 @@ function FestivalDetails(props) {
                                             {/*<p>식당명: {restaurant.RESTAURANTNAME}</p>*/}
                                             <h4 style={{fontWeight: "bold"}}>{restaurant.RESTAURANTNAME}</h4>
                                             <hr style={{
-                                                border: "dashed 1px rgba(252, 211, 148, 0.69)",
+                                                border: "dashed 1px lightgray",
                                                 margin: "0 0 5% 0",
                                                 width: "95%"
                                             }}/>

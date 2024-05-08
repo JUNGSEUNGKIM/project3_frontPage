@@ -5,8 +5,10 @@ import axios from "axios";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 
 // const itemsPerPage = 5;
-const marketItemsPerPage = 3; // 주변시장 페이지당 아이템 개수
-const restaurantItemsPerPage = 3; // 주변맛집 페이지당 아이템 개수
+// const marketItemsPerPage = 3; // 주변시장 페이지당 아이템 개수
+// const restaurantItemsPerPage = 3; // 주변맛집 페이지당 아이템 개수
+const marketItemsPerPage = window.innerWidth <= 768 ? 1 : 3;
+const restaurantItemsPerPage =window.innerWidth <= 768 ? 1 : 3;
 
 function EventDetails() {
 
@@ -84,11 +86,11 @@ function EventDetails() {
 
 
     // 지도 이미지 마커 표시
-    // const markerImageSrc =
-    //     "https://i.ibb.co/jL92hxR/Result.png"
-    //
-    // const imageSize = { width: 28, height: 29 }
-    // const spriteSize = { width: 36, height: 98 }
+    const markerImageSrc =
+        "https://i.ibb.co/jL92hxR/Result.png"
+
+    const imageSize = { width: 28, height: 29 }
+    const spriteSize = { width: 36, height: 98 }
     //
     // const [selectedCategory, setSelectedCategory] = useState("event")
     //
@@ -153,8 +155,8 @@ function EventDetails() {
     // const festivalPositions = {
     // {lat: festivalData[0].Latitude, lng: festivalData[0].Longitude}
     // }
-    // const eventOrigin = { x: 1, y: 0 }
-    //
+    const eventOrigin = { x: 1, y: 0 }
+
     // // 시장 마커가 표시될 좌표
     // const marketPositions =
     //     marketAndRestaurantData.market_data.map(market => ({
@@ -163,7 +165,7 @@ function EventDetails() {
     //     }));
     //
     // const marketOrigin = { x: 1, y: 34 }
-    //
+
     // // 맛집 마커가 표시될 좌표
     // const restaurantPositions = marketAndRestaurantData.yumyum_data.map(restaurant => ({
     //     lat: restaurant.LATITUDE,
@@ -189,15 +191,15 @@ function EventDetails() {
 
 
     return (
-        <div id="festival_details">
-            <div className={styles.details_container}>
+        <div id="events_details">
+            <div className={styles.event_details_container}>
 
                 <div className={styles.title_container}>
                     <div className={styles.main_title}>
                         <h3 style={{fontWeight:"bold"}}>{eventData[0].EVENTNAME}</h3>
-                        <p style={{fontSize:"1.5rem"}}>
+                        <span style={{fontSize:"1.5rem"}}>
                             {eventData[0].LOCATION} ｜ {formattedStartDate} ~ {formattedEndDate}
-                        </p>
+                        </span>
                     </div>
                 </div>
 
@@ -206,11 +208,11 @@ function EventDetails() {
                     {/* 전시 내용 PART */}
                     <div className={styles.details_event_info}>
                         {/*<div className={styles.details_festival_info}>*/}
-                        <h4 style={{fontWeight:"bold"}}>상세정보</h4>
+                        <h4 style={{fontWeight: "bold"}}>상세정보</h4>
                         <hr/>
-                        <p>{eventData[0].DESCRIPTION}</p>
-                        &nbsp;
-                        <ul>
+                        <h5 style={{fontWeight: "bold", margin: "3em 0 1em 1em"}}>{eventData[0].DESCRIPTION}</h5>
+                    &nbsp;<br/>
+                    <ul>
                             <li><span className={styles.label}>장소:</span>&emsp;&emsp;&emsp;{eventData[0].LOCATION}</li>
                             <li><span
                                 className={styles.label}>기간:</span>&emsp;&emsp;&emsp;{formattedStartDate} ~ {formattedEndDate}
@@ -264,18 +266,18 @@ function EventDetails() {
                             <MapMarker
                                 style={{border: 'tranparent'}}
                                 position={{lat: eventData[0].LATITUDE, lng: eventData[0].LONGITUDE}}
-                                // image={{
-                                //     src: markerImageSrc,
-                                //     size: imageSize,
-                                //     options: {
-                                //         spriteSize: spriteSize,
-                                //         spriteOrigin: eventOrigin,
-                                //     },
-                                // }}
+                                image={{
+                                    src: markerImageSrc,
+                                    size: imageSize,
+                                    options: {
+                                        spriteSize: spriteSize,
+                                        spriteOrigin: eventOrigin,
+                                    },
+                                }}
                             />
 
                             {/*{selectedCategory === "market" &&*/}
-                            {/*    marketPositions.map((position) => (*/}
+                            {/*        marketPositions.map((position) => (*/}
                             {/*        <MapMarker*/}
                             {/*            key={`market-${position.lat},${position.lng}`}*/}
                             {/*            position={position}*/}
@@ -288,7 +290,8 @@ function EventDetails() {
                             {/*                },*/}
                             {/*            }}*/}
                             {/*        />*/}
-                            {/*    ))}*/}
+                            {/*    ))*/}
+                        {/*}*/}
                             {/*{selectedCategory === "restaurant" &&*/}
                             {/*    restaurantPositions.map((position) => (*/}
                             {/*        <MapMarker*/}
@@ -311,7 +314,7 @@ function EventDetails() {
 
 
                     {/* 주변시장 */}
-                    <div className={styles.regional_market}>
+                    <div className={styles.event_regional_market}>
                         <h4 style={{fontWeight: "bold"}}>주변시장</h4>
                         <hr/>
                         {marketAndRestaurantData.market_data && marketAndRestaurantData.market_data.length > 0 ? (
@@ -327,20 +330,20 @@ function EventDetails() {
                                                 margin: "0 0 5% 0",
                                                 width: "95%"
                                             }}/>
-                                            <p><span
+                                            <div><span
                                                 className={styles.label}>시장주소:</span>&emsp;&emsp;&emsp;{market.ROADADDRESS === "주소 X" ? market.JIBUNADDRESS : market.ROADADDRESS}
-                                            </p>
-                                            <p><span
+                                            </div>
+                                            <div><span
                                                 className={styles.label}>시장유형:</span>&emsp;&emsp;&emsp;{market.MARKETTYPE}
-                                            </p>
-                                            <p><span className={styles.label}>시장까지의 거리:</span>
+                                            </div>
+                                            <div><span className={styles.label}>시장까지의 거리:</span>
                                                 {calculateDistance(eventData[0].LATITUDE, eventData[0].LONGITUDE, market.LATITUDE, market.LONGITUDE).toFixed(2)} km
-                                            </p>
+                                            </div>
                                         </div>
                                     ))}
                             </div>
                         ) : (
-                            <div className={styles.no_data_message}>
+                            <div className={styles.event_no_data_message}>
                                 <span>근처에 시장이 없습니다😢</span>
                             </div>
                         )}
@@ -356,7 +359,7 @@ function EventDetails() {
                     </div>
 
                     {/* 주변맛집 */}
-                    <div className={styles.regional_yumyum}>
+                    <div className={styles.event_regional_yumyum}>
                         <h4 style={{fontWeight: "bold"}}>주변맛집</h4>
                         <hr/>
                         {marketAndRestaurantData.yumyum_data && marketAndRestaurantData.yumyum_data.length > 0 ? (
@@ -371,17 +374,17 @@ function EventDetails() {
                                                 margin: "0 0 5% 0",
                                                 width: "95%"
                                             }}/>
-                                            <p>식당주소: {restaurant.RESTAURANTADDRESS}</p>
+                                            <div>식당주소: {restaurant.RESTAURANTADDRESS}</div>
 
                                             {/* 위도와 경도를 사용하여 거리 계산 후 출력 */}
-                                            <p>식당까지의 거리:
+                                            <div>식당까지의 거리:
                                                 {calculateDistance(eventData[0].LATITUDE, eventData[0].LONGITUDE, restaurant.LATITUDE, restaurant.LONGITUDE).toFixed(2)} km
-                                            </p>
+                                            </div>
                                         </div>
                                     ))}
                             </div>
                         ) : (
-                            <div className={styles.no_data_message}>
+                            <div className={styles.event_no_data_message}>
                                 <span>근처에 맛집이 없습니다😢</span>
                             </div>
                         )}
