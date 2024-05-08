@@ -304,7 +304,7 @@ const PJmain = (props) => {
         intervalRef.current = setInterval(() => {
             setCurrentIndex(prevIndex => (prevIndex + 1) % items.length);
             // setProgress(100);
-        }, 100000);
+        }, 7000);
 
 
 
@@ -556,10 +556,15 @@ const PJmain = (props) => {
                     ))}
                 </div>
                 {selectedOption === "market" && (
+                    <div>
                     <button onClick={handleRandomMarket} className={styles.randomButton}>
                         랜덤 시장 보기
                     </button>
-                )}
+                    <button onClick={() => navigate("/personalized")} className={styles.moreButton}>
+                         더보기
+                    </button>
+                    </div>
+            )}
             </div>
             <div className={styles.popular}>
                 <div className={styles.popular_boxes_container}>
@@ -582,9 +587,14 @@ const PJmain = (props) => {
                     ))}
                 </div>
                 {selectedOption === "Eat_place" && (
+                    <div>
                     <button onClick={handleRandomEatPlace} className={styles.randomButton}>
                         랜덤 맛집 보기
                     </button>
+                    <button onClick={() => navigate("/personalized")} className={styles.moreButton}>
+                        더보기
+                    </button>
+                    </div>
                 )}
             </div>
         </div>
