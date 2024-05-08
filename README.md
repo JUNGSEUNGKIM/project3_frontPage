@@ -1,4 +1,3 @@
-![image](https://github.com/JUNGSEUNGKIM/project3_frontPage/assets/154941779/6dc89c24-95e2-4854-9cd9-5bf776a31a30)# GARAGE
 ## 목차
 
 ### -팀원소개
