@@ -9,13 +9,16 @@ import  {useNavigate, useParams} from "react-router-dom";
 import TrafficChart from "./TrafficChart";
 import AgeChart from "./AgeChart";
 import SearchWordChart from "./SearchWordChart";
+import {useQuery} from "react-query";
+import styled from "styled-components";
 
 
 function Personalized(props) {
     const navigate = useNavigate();
 
     const [scvData, setCsvData] = useState(null);
-
+    const [loading, setLoading] = useState(true);
+    const [festivalData, setfestivalData] = useState([]);
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         const reader = new FileReader();
@@ -25,20 +28,38 @@ function Personalized(props) {
         };
         reader.readAsText(file);
     };
+    const [imgBox, setImgBox] = useState([])
+    useEffect(() => {
+        // getImage()
+    }, []);
 
+    const { data: festivals, isLoading, isError } = useQuery(
+        ['getFestivalInfo'],
+        () => axios.get('http://localhost:5000/festivals', { params: { loc:'전라남도'} })
+            .then(response => response.data)
+    );
+    // console.log("festivals:::::::::",festivals)
 
     // 각 버튼에 대한 박스 내용을 배열로 저장합니다.
     const boxContentsByButton = {
-        "계절": ["https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=dc70d9dd-14f1-43bd-be08-eba2a487d943",
-            "https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=c9ab6325-1057-4849-ab5f-e8e0d647a115",
-            "https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=f39cd6e4-6478-4266-935a-3994e3616ce6"],
-        "지역": ["https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=e91073f2-4e1e-41ca-bc95-22a7c1745038",
-            "https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=1a9403fc-ffc8-4b74-a326-a5e95b5ea194",
-            "https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=2684e8ed-23f0-4b75-8315-917f82213b72"],
-        "세트": ["https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=98fc90c1-616b-4077-b4e5-42226d6cda7d",
-            "https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=8b735795-abd9-4a05-8ad0-2c5146143d33",
-            "https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=c635c3c1-cbbe-410c-9f80-fd285b38e6cb"]
+        "계절":[ ],
+        "지역":[ ],
+        "세트":[ ]
     };
+    // let countImg = festivals.length>3?3:festivals.length
+    let countImg;
+    if (festivals) {
+        countImg = festivals.length > 3 ? 3 : festivals.length;
+    } else {
+        countImg = 0; // 또는 다른 기본값 설정
+    }
+    for(var i =0 ; i < countImg;i++){
+        boxContentsByButton["계절"].push(props.imgURL+"/"+festivals[i].ImageName.split(";")[0])
+        boxContentsByButton["지역"].push(props.imgURL+"/"+festivals[i].ImageName.split(";")[0])
+        boxContentsByButton["세트"].push(props.imgURL+"/"+festivals[i].ImageName.split(";")[0])
+
+    }
+
 
     // 현재 선택된 버튼과 박스 내용을 관리합니다.
     const [currentButton, setCurrentButton] = useState("계절");
@@ -57,9 +78,15 @@ function Personalized(props) {
         "https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=1229ae98-0815-45d4-8706-291f0d7282ea",
         "https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=1b3d7ae2-d966-4ef5-a8c5-914fd897976f",
         "https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=b7ba9199-c753-40ad-b8d5-f4838d3369e8",
-        "https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=e612abda-1147-4b57-92bb-becb935f3503"
+        "https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=e612abda-1147-4b57-92bb-becb935f3503",
+        "https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=cd737f78-bd8e-4f5d-9aa6-f016dde10db5",
+        "https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=88bacc90-37c5-4301-b8a4-2124b032f07f",
+        "https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=3a515ba7-d336-4b5a-a58f-8590b4cd23c6"
     ];
-
+    // let countImg2 = festivals.length>5?5:festivals.length
+    // for(var i =0 ; i< countImg2;i++){
+    //
+    // }
     // 4개의 랜덤 이미지를 선택
     const shuffledImages = randomBoxImages.sort(() => Math.random() - 0.5);
     // const selectedImages = shuffledImages.slice(0, 4);
@@ -84,6 +111,44 @@ function Personalized(props) {
         // 상태 업데이트
         setBoxImages(selectedImages);
     };
+
+    const InfoOverlay = styled.div`
+    position: absolute;
+    bottom: ${props => props.show ? '0' : '-100%'};
+    //top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    //display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: bottom 0.3s ease;
+`;
+
+    const InfoText = styled.div`
+    color: white;
+    font-size: 1.4rem;
+    text-align: center;
+    
+    h3{
+        margin-bottom: 2rem;
+    }
+
+    @media screen and (max-width: 768px) {
+        h3 {
+            font-size: 14px;
+        }
+        
+        span {
+            font-size: 1.2rem;
+        }
+    }
+`;
+
+    console.log("festivals::::::::::::::::::::",festivals)
 
     return (
         <div>
@@ -113,11 +178,17 @@ function Personalized(props) {
                     </div>
                     <div className={styles.recommend_boxes_container}>
                         {/* 현재 선택된 버튼에 따라 박스 내용을 출력합니다. */}
+
                         {currentBoxContents.map((content, index) => (
-                            <div key={index} className={styles.recommend_box}>
-                                <img src={content} alt={`Box ${index + 1}`} />
-                            </div>
+                            // <InfoOverlay>
+                                /*<InfoText>*/
+                                    <div key={index} className={styles.recommend_box}>
+                                    <img src={content} alt={`Box ${index + 1}`} />
+                                    </div>
+                                /*</InfoText>*/
+                            /*</InfoOverlay>*/
                         ))}
+
                     </div>
                 </div>
 
