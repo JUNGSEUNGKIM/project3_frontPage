@@ -31,9 +31,6 @@ function Festival(props) {
     const [loading, setLoading] = useState(true);
 
 
-    // let [modal] = useState(true)
-    // let navigate = useNavigate();
-
     // 게시글 제목 선택시 해당 게시글에 대한 인덱스 정보
     // let [selectedAreaIndex ] = useState(1);
     const [selectedZone, setSelectedZone] = useState("");
@@ -50,7 +47,8 @@ function Festival(props) {
 
     useEffect(() => {
         // 컴포넌트가 마운트될 때 랜덤한 지역 선택
-        setSelectedZone(getRandomZone());
+        const randomZone = getRandomZone();
+        setSelectedZone(randomZone);
     }, []);
 
 
@@ -58,7 +56,8 @@ function Festival(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/events`);
+                const response = await axios.get(`http://localhost:5000/events`,
+                    { params: { loc: convertToFullRegionName(selectedZone) } });
                 setEventData(response.data);
                 // console.log("eventData:", response.data);
 
@@ -69,10 +68,10 @@ function Festival(props) {
                 setLoading(false); // 데이터 가져오기 완료 후 로딩 상태 해제
             }
         };
-
-        fetchData();
-    }, []);
-
+        if (selectedZone) {
+            fetchData();
+        }
+    }, [selectedZone]);
 
     function convertToFullRegionName(zone) {
         switch (zone) {
@@ -161,7 +160,8 @@ function Festival(props) {
                             {
                                 <AreaModal
                                     eventData={eventData}
-                                    selectedZone={selectedZone}
+                                    onImageClick={handleImageClick}
+                                    // selectedZone={selectedZone}
                                 />
                             }
                         </div>
@@ -199,19 +199,32 @@ function Festival(props) {
 
 
 function AreaModal(props) {
-    const { eventData } = props;
+    const { eventData, selectedZone } = props;
     let navigate = useNavigate();
 
     // eventData가 존재하지 않을 경우 빈 배열을 반환
-    if (!eventData) {
-        return
-        <p> 표시할 전시 정보가 없습니다. </p>// 또는 다른 로딩 상태를 표시할 수도 있습니다.
+    if (!eventData || eventData.length === 0) {
+        return (
+            <div className={styles.event_no_data_message}>
+                <span> 표시할 전시 정보가 없습니다. </span>
+            </div>
+        );
     }
+
+    // 선택된 지역의 전시들만 필터링
+    const filteredEvents = selectedZone ? eventData.filter(event => {
+        // 선택된 지역과 일치하는 전시들만 필터링
+        return event.ROADADDRESS.includes(selectedZone) || event.JIBUNADDRESS.includes(selectedZone);
+    }) : eventData;
+
+    // console.log("evnetDataFromModal:::",eventData);
+    // console.log("filteredEventsFromModal::",filteredEvents);
 
     return (
         <div className={styles.event_container} style={{display: "flex"}}>
 
-                {eventData.map((event, index) => {
+                {/*{eventData.map((event, index) => {*/}
+                {filteredEvents .map((event, index) => {
                     // ROADADDRESS가 있는지 확인하고 없는 경우 JIBUNADDRESS를 사용
                     const address = event.ROADADDRESS !== '주소 X' ? event.ROADADDRESS : event.JIBUNADDRESS;
 
@@ -236,8 +249,6 @@ function AreaModal(props) {
                             <h4>[{location}]</h4>
                             <h4>{shortEventName}</h4>
                             <h5>{shortDescription}</h5>
-                            {/*<a>자세히보기</a>*/}
-                            {/*<a onClick={() => navigate(`/eventdetails/${event.EVENTID}`)}>자세히보기</a>*/}
                             <div className={styles.detailLink}>
                                 <a onClick={() => navigate(`/eventdetails/${event.EVENTID}`)}>자세히보기</a>
                             </div>
