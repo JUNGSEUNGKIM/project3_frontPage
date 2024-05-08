@@ -292,14 +292,50 @@ function DetailBoard(props) {
                                                               placeholder={props.loginId+"님 댓글을 남겨보세요"}
                                                               value={commentTX}
                                                               required onChange={(e)=>{setCommentTX(e.target.value)}}>{commentTX}</textarea><br/>
-                                                    <input type="button" value="등록" className="submit-button" onClick={()=>{addComment()}}/>
+                                                    <input type="button" value="등록" className="submit-button" onClick={()=>{addComment()}}
+                                                           style={{
+                                                               marginLeft:"20px",
+                                                               width: "100px",
+                                                               height: "50px",
+                                                               background: "#a6e1ec",
+                                                               color: "white",
+                                                               letterSpacing: "2px",
+                                                               border: "none"
+                                                    }}
+                                                    />
                                             </div>
 
                                             <div className="center">
-                                                <a onClick={()=>{navigate("/boarder")}}  className="button">이전 페이지로 돌아가기</a>
+                                                <a onClick={()=>{navigate("/boarder")}}  className="button"
+                                                    style={{
+                                                        marginLeft: "6%",
+                                                        padding: "4px 12px",
+                                                        textAlign: "center",
+                                                        backgroundColor: "#7fccde",
+                                                        color: "white",
+                                                        fontSize: "12px"
+
+                                                    }}>이전 페이지로 돌아가기</a>
                                                 {upDateTX ?
-                                                    <a onClick={() => boarderUpdate()} className="button">수정</a>
-                                                :<a className="button" onClick={()=>updateAxios(resultQue.board.board_code)}>등록</a>
+                                                    <a onClick={() => boarderUpdate()} className="button"
+                                                        style={{
+                                                            marginLeft: "10px",
+                                                            padding: "4px 12px",
+                                                            textAlign: "center",
+                                                            backgroundColor: "#7fccde",
+                                                            color: "white",
+                                                            fontSize: "12px"
+                                                        }}
+                                                    >수정</a>
+                                                :<a className="button" onClick={()=>updateAxios(resultQue.board.board_code)}
+                                                    style={{
+                                                        marginLeft: "10px",
+                                                        padding: "4px 12px",
+                                                        textAlign: "center",
+                                                        backgroundColor: "#7fccde",
+                                                        color: "white",
+                                                        fontSize: "12px"
+                                                    }}>등록</a>
                                                 }
 
 
@@ -321,7 +357,16 @@ function DetailBoard(props) {
                                                             // 오류 처리
                                                             console.error("삭제 요청 중 오류 발생:", error);
                                                         });
-                                                }}>삭제</a>
+                                                }}
+                                                style={{
+                                                    marginLeft: "10px",
+                                                    padding: "4px 12px",
+                                                    textAlign: "center",
+                                                    backgroundColor: "#7fccde",
+                                                    color: "white",
+                                                    fontSize: "12px"
+                                                }}
+                                                >삭제</a>
                                             </div>
 
                                         </section>

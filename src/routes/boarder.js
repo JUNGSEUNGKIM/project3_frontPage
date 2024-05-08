@@ -79,7 +79,19 @@ function Borader(props){
                                     <button onClick={() => {
 
                                         navigate("/create");
-                                    }}>글쓰기
+                                    }}
+                                        style={{
+                                            marginTop: "20px",
+                                            padding: "4px 12px",
+                                            textAlign: "center",
+                                            backgroundColor: "#7fccde",
+                                            color: "white",
+                                            border: "solid gray 2px",
+                                            width: "120px",
+                                            height: "50px",
+                                            fontSize: "20px"
+                                        }}
+                                    >글쓰기
                                     </button>
                                 </div>
                             </div>
@@ -139,7 +151,12 @@ function Borader(props){
                             <div>
                                 {
                                     resultQue.currentPage > 1 ?
-                                        <a> [이전] </a> :
+                                        <a style={{
+                                            background:`url("https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimage.flaticon.com%2Ficons%2Fpng%2F512%2F60%2F60602.png&type=sc960_832")`,
+                                            backgroundSize: "10px auto",
+
+
+                                        }}> &lt; </a> :
                                         null
                                 }
                                 {
@@ -147,7 +164,17 @@ function Borader(props){
                                         const pageNumber = resultQue.startPage + index;
                                         return (
                                             pageNumber === resultQue.currentPage ? (
-                                                <span className="current-page" key={pageNumber}>[{pageNumber}]</span>
+                                                <span className="current-page" key={pageNumber}
+                                                    style={{
+                                                        border: "solid black ",
+                                                        backgroundColor: "navy",
+                                                        marginLeft: "5px",
+                                                        padding: "4px 12px",
+                                                        textAlign: "center",
+                                                        fontSize: "20px",
+                                                        color: "white",
+                                                    }}
+                                                >{pageNumber}</span>
                                             ) : (
                                                 <a onClick={() => {
                                                     setParams('/?page=' + pageNumber)
@@ -155,7 +182,16 @@ function Borader(props){
                                                     //     console.log('여기 확인:', resultQue.data);
                                                     // }
 
-                                                }} key={pageNumber}>[{pageNumber}]</a>
+                                                }} key={pageNumber}
+                                                    style={{
+                                                        border:"solid grey 1px",
+                                                        marginLeft: "5px",
+                                                        padding: "4px 12px",
+                                                        textAlign: "center",
+                                                        color: "black",
+                                                        fontSize: "20px"
+                                                    }}
+                                                >{pageNumber}</a>
                                             )
                                         );
                                     })
