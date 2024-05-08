@@ -1,4 +1,9 @@
+// import React from 'react';
+// import { useNavigate } from 'react-router-dom';
+// const navigate = useNavigate();
+// import axios from 'axios';
 $(document).ready(function chatBotInit() {
+
     setTimeout(function() {
         // 여기에 실행할 코드 작성
 
@@ -10,24 +15,24 @@ $(document).ready(function chatBotInit() {
     const data = {
         'level1': [
             {
-                'name': '신발',
+                'name': '중부',
                 'number': 1,
                 'message': '<br>아래에서 주제를 선택해주세요:<p>',
                 'level2': [
                     {
-                        'name': '운동화',
+                        'name': '경기',
                         'number': 1,
-                        'message': '<br>저희 매장은 Nike 전문 매장입니다. 상세정보를 보여드립니다.<p>'
+                        'message': '<br> 상세정보를 보여드립니다.<p>'
                     },
                     {
-                        'name': '구두',
+                        'name': '서울',
                         'number': 2,
-                        'message': '<br>저희 매장은 수제구두 전문 매장입니다. 상세정보를 보여드립니다.<p>'
+                        'message': '<br> 상세정보를 보여드립니다.<p>'
                     },
                     {
-                        'name': '샌들',
+                        'name': '인천',
                         'number': 3,
-                        'message': '<br>저희 매장은 고급 샌들 전문 매장입니다. 상세정보를 보여드립니다.<p>'
+                        'message': '<br>상세정보를 보여드립니다.<p>'
                     },
                     {
                         'name': '상위메뉴',
@@ -37,24 +42,24 @@ $(document).ready(function chatBotInit() {
                 ]
             },
             {
-                'name': '의류',
+                'name': '남부',
                 'number': 2,
                 'message': '<br>아래에서 주제를 선택해주세요:<p>',
                 'level2': [
                     {
-                        'name': '여성의류',
+                        'name': '전라북도',
                         'number': 1,
-                        'message': '<br>저희 매장은 지그재그 재휴 매장입니다. 상세정보를 보여드립니다.<p>'
+                        'message': '<br> 상세정보를 보여드립니다.<p>'
                     },
                     {
-                        'name': '남성의류',
+                        'name': '경상북도',
                         'number': 2,
-                        'message': '<br>저희 매장은 정장 전문 매장입니다. 상세정보를 보여드립니다.<p>'
+                        'message': '<br> 상세정보를 보여드립니다.<p>'
                     },
                     {
-                        'name': '유아의류',
+                        'name': '광주',
                         'number': 3,
-                        'message': '<br>저희 매장은 아가방 전문 매장입니다. 상세정보를 보여드립니다.<p>'
+                        'message': '<br> 상세정보를 보여드립니다.<p>'
                     },
                     {
                         'name': '상위메뉴',
@@ -113,8 +118,17 @@ $(document).ready(function chatBotInit() {
 
     // 메세지를 화면에 추가
     function appendMessage(sender, message) {
+        let styleCode
+        // alert(sender)
+        if(sender ==="<br>Chatbot" || sender==="Chatbot" || sender==="Chatbot<br>"){
+            styleCode="margin-left: 0"
+            // alert(styleCode)
+        }else{
+            styleCode="margin-left:0; text-align: right; width:100%"
+        }
+        // alert(message)
 
-        const messageElement = $('<div></div>').html(`<p><strong>${sender}:</strong> ${message}`);
+        const messageElement = $('<div style="text-align: left"></div>').html(`<p style="${styleCode}"><strong>${sender}:</strong> ${message}`);
         chatContainer.append(messageElement);
         chatContainer.scrollTop(chatContainer.prop('scrollHeight'));
         if(ttsEnabled){
@@ -127,9 +141,10 @@ $(document).ready(function chatBotInit() {
 
     // 초기 환영 메세지 출력
     function showWelcomeMessage() {
+
         let message = '<br>코드랩 쇼핑몰에 오신 것을 환영합니다.' +
             '<br>저희 쇼핑몰은 신발, 의류 전문몰입니다.' +
-            '<br>아래 주제에 대해서 문의해주세요.<p>';
+            '<br>아래 주제에 대해서 문의해주세요.<p style="margin-left: 0">';
 
         // 데이터 객체에서 카테고리 정보를 가져와서 메시지에 추가
         data.level1.forEach(function (category) {
@@ -150,6 +165,7 @@ $(document).ready(function chatBotInit() {
                 showSubCategories(category); // 수정된 부분
                 CATEGORY_STATUS = 2;
                 level1_category = category.number;
+
             } else {
                 for (const subCategory of category.level2) {
                     if (found)
@@ -158,6 +174,7 @@ $(document).ready(function chatBotInit() {
                         found = true;
                         appendMessage('Chatbot', subCategory.message);
                         showSubCategories(category)
+                        // alert(category)
                     } else if (userMessage === '상위메뉴' || userMessage === '상위 메뉴') {
                         found = true;
                         showWelcomeMessage();
@@ -169,7 +186,7 @@ $(document).ready(function chatBotInit() {
         return found;
     }
 
-    function findByNumber(userMessage) {
+    async function findByNumber(userMessage) {
         // 상위 카테고리에 대한 처리
         if (CATEGORY_STATUS === 1) {
             level1_category = parseInt(userMessage);
@@ -178,9 +195,16 @@ $(document).ready(function chatBotInit() {
             if (!isNaN(level1_category) && level1_category >= 1 && level1_category <= data.level1.length) {
                 const category = data.level1[level1_category - 1];
                 showSubCategories(category);
+
                 CATEGORY_STATUS = 2;
             } else {
                 // 다른 키워드에 대한 기본 응답
+                // alert(userMessage)
+                // const response = await axios.get('http://localhost:3000/findcode');
+                // const result = response.data;
+
+
+
                 setTimeout(function () {
                     appendMessage('Chatbot', '안녕하세요! 다른 도움이 필요하신가요?<br>');
                 }, 500);
@@ -194,8 +218,11 @@ $(document).ready(function chatBotInit() {
                 const category = subCategories[selectedCategory - 1];
                 // 별도의 서브카테고리 메세지를 출력하는 메소드 대신,
                 // 해당 카테고리에서 정의된 메세지를 그대로 출력
-                appendMessage('Chatbot', category.message);
+                // category.message.push("<a href='/festival'>이동하기</a>")
+                appendMessage('Chatbot', category.message+"<a href='/festival'>이동하기</Link>");
+                // appendMessage("Chatbot","<a href='/festival'>이동하기</a>")
                 CATEGORY_STATUS = 2;
+                // alert(category.message)
                 showSubCategories(data.level1[level1_category - 1]);
             } else if (userMessage === '0') {
                 showWelcomeMessage(); // 딕셔너리 구조 레벨에 맞는 메세지를 출력하기 때문에 하위 조건을 더 간단히 한다.
@@ -221,6 +248,7 @@ $(document).ready(function chatBotInit() {
         // 메뉴 번호 검색 방식
         if (!found){
             findByNumber(userMessage);
+
         }
 
         // if (!found) {
@@ -235,13 +263,15 @@ $(document).ready(function chatBotInit() {
     // 하위 카테고리 출력
     function showSubCategories(category) {
         setTimeout(function () {
-            let message = '';
+            let message = '<br>';
             for (let i = 0; i < category.level2.length; i++) {
                 message += `${category.level2[i].number}.  ${category.level2[i].name}<br>`;
                 // chatContainer.append(`${category.level2[i].number}. ${category.level2[i].name}<br>`);
 
             }
-            chatContainer.append(message);
+            // chatContainer.append(`<div style="text-align:left"> ${message}</div>`);
+            appendMessage("Chatbot",message)
+            // alert(message)
             if(ttsEnabled){
                 phoneTextToSpeech(message)
             }
