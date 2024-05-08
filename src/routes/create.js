@@ -33,6 +33,7 @@ function Create(props) {
         // 게시글 텍스트를 formData에 추가합니다.
         formData.append('title', title);
         formData.append('content', content);
+        formData.append('user_id',props.loginId)
 
         // 선택한 각 사진을 formData에 추가합니다.
         images.forEach((file, index) => {
