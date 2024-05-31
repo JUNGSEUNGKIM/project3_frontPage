@@ -43,7 +43,7 @@ function Create(props) {
         // console.log(formData.get('image1'))
 
         try {
-            const response = await axios.post(props.serverURL+'/create', formData,{withCredentials: true}, {
+            const response = await axios.post(props.serverURL+'/svcreate', formData,{withCredentials: true}, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -61,7 +61,7 @@ function Create(props) {
     const festival2Week = async () => {
         try {
             // axios.get 메서드를 사용하여 서버에서 데이터를 가져옵니다.
-            const response = await axios.get(props.serverURL + '/festivalselect', { withCredentials: true });
+            const response = await axios.get(props.serverURL + '/svfestivalselect', { withCredentials: true });
             // 가져온 데이터를 이용하여 festivals 상태를 설정합니다.
             setFestivals(response.data.festival);
             // console.log("::",festivals);

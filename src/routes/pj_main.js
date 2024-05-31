@@ -20,9 +20,9 @@ const PJmain = (props) => {
             console.log(":::::fetchData 작동중:::::")
             try {
                 const [festivalsResponse, marketsResponse, eatPlaceResponse] = await Promise.all([
-                    axios.get('http://localhost:5000/festival'),
-                    axios.get('http://localhost:5000/market'),
-                    axios.get('http://localhost:5000/eat_place')
+                    axios.get(props.apiUrl+'/festival'),
+                    axios.get(props.apiUrl+'/market'),
+                    axios.get(props.apiUrl+'/eat_place')
                     // axios.get('http://192.168.0.15:5000/festival'),
                     // axios.get('http://192.168.0.15:5000/market'),
                     // axios.get('http://192.168.0.15:5000/eat_place')
@@ -318,7 +318,7 @@ const PJmain = (props) => {
     let [boardHead,setBoardHead]=useState([])
 
     useEffect(() => {
-        axios.get(props.serverURL + "/main",{params:{user_id:props.loginId}}, { withCredentials: true })
+        axios.get(props.serverURL + "/svmain",{params:{user_id:props.loginId}}, { withCredentials: true })
             .then(response => {
                 setBoardHead(response.data.result);
                 // console.log("::::::main??", response.data.result);

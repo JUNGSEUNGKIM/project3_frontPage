@@ -44,10 +44,14 @@ function App() {
 
     const [showChat, setShowChat] = useState(false);
     const [fullScreen, setFullScreen] = useState(false);
-    // const [serverURL, setServerURL] = useState('http://192.168.0.21:3000');
-    // const [imgURL, setImgURL] = useState('http://192.168.0.21:3000/uploads')
     const [serverURL, setServerURL] = useState('http://192.168.0.23:3000');
     const [imgURL, setImgURL] = useState('http://192.168.0.23:3000/uploads')
+    // const [serverURL, setServerURL] = useState('http://192.168.0.23:3000');
+    const [apiURL, setApiURL] = useState('http://localhost:5000');
+    // const [imgURL, setImgURL] = useState('http://192.168.0.23:3000/uploads')
+    // const [serverURL, setServerURL] = useState('http://3.143.252.195:3000');
+    // const [apiURL, setApiURL] = useState('http://3.143.252.195:5000');
+    // const [imgURL, setImgURL] = useState('http://3.143.252.195:3000/uploads')
 
     const toggleChat = () => {
         setShowChat(!showChat);
@@ -77,17 +81,18 @@ function App() {
                   {/*{resultQuery.data.mountName}*/}
           <Header serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId} setLoginId={setLoginId} setIsLoggedIn={setIsLoggedIn}/>
           <Routes>
-              <Route path={"/home"} element={<PJmain imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId}/>}/>
+              <Route path={"/"} element={<PJmain imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId} apiUrl={apiURL}/>}/>
+              <Route path={"/home"} element={<PJmain imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId} apiUrl={apiURL}/>}/>
               {/*<Route path={"/second"} element={<SecondPage imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId}/>}/>*/}
-              <Route path={"/boarder"} element={<Boarder imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId}/>}/>
-              <Route path={"/login"} element={<Login imgURL={imgURL} serverURL={serverURL} setLoginId={setLoginId} setIsLoggedIn={setIsLoggedIn}/>}/>
-              <Route path={"/signup"} element={<SignUp/>}/>
-              <Route path={"/festival"} element={<Festival imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId}/>}/>
-              <Route path={"/create"} element={<Create imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId}/>}/>
-              <Route path={"/personalized"} element={<Personalized imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId}/>}/>
-              <Route path={"/detailboard/:code"} element={<DetailBoard imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId}/>}/>
-              <Route path={"/festivaldetails/:FestivalID"} element={<FestivalDetails imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId}/>}/>
-              <Route path={"/eventdetails/:EVENTID"} element={<EventDetails  imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId}/>}/>
+              <Route path={"/boarder"} element={<Boarder imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId} apiUrl={apiURL}/>}/>
+              <Route path={"/login"} element={<Login imgURL={imgURL} serverURL={serverURL} setLoginId={setLoginId} setIsLoggedIn={setIsLoggedIn} apiUrl={apiURL}/>}/>
+              <Route path={"/signup"} element={<SignUp imgURL={imgURL} serverURL={serverURL} setLoginId={setLoginId} setIsLoggedIn={setIsLoggedIn} apiUrl={apiURL}/>}/>
+              <Route path={"/festival"} element={<Festival imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId} apiUrl={apiURL}/>}/>
+              <Route path={"/create"} element={<Create imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId} apiUrl={apiURL}/>}/>
+              <Route path={"/personalized"} element={<Personalized imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId} apiUrl={apiURL}/>}/>
+              <Route path={"/detailboard/:code"} element={<DetailBoard imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId} apiUrl={apiURL}/>}/>
+              <Route path={"/festivaldetails/:FestivalID"} element={<FestivalDetails imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId} apiUrl={apiURL}/>}/>
+              <Route path={"/eventdetails/:EVENTID"} element={<EventDetails  imgURL={imgURL} serverURL={serverURL} isLoggedIn={isLoggedIn} loginId={loginId} apiUrl={apiURL}/>}/>
 
 
 

@@ -41,7 +41,7 @@ function FestivalDetails(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/festivals`, {
+                const response = await axios.get(props.apiUrl+`festivals`, {
                     params: { festival_id: FestivalID }
                 });
                 setFestivalData(response.data);
@@ -62,7 +62,7 @@ function FestivalDetails(props) {
     useEffect(() => {
         const fetchGarageData = async () => {
             try {
-                const garageDataResponse = await axios.get(`http://localhost:5000/garage_data`, {
+                const garageDataResponse = await axios.get(props.apiUrl+`/garage_data`, {
                     params: { id: FestivalID }
                 });
                 setMarketAndRestaurantData(garageDataResponse.data);

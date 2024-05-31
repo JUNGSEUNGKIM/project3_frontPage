@@ -63,7 +63,7 @@ function SignUp(props) {
         setFormData(updatedFormData)
         console.log(updatedFormData);
         // Axios를 사용하여 POST 요청 보내기
-        axios.post('http://192.168.0.21:3000/signup', updatedFormData)
+        axios.post(props.serverURL+'/signup', updatedFormData)
             .then(response => {
                 console.log('데이터 전송 성공:', response);
                 if(response.data.result){
@@ -107,7 +107,7 @@ function SignUp(props) {
             // 여기서는 간단한 조건을 통해 아이디 체크를 시뮬레이션합니다.
         // 실제로는 서버 요청 등의 로직이 들어갈 수 있습니다.
         if(id!=='') {
-            axios.post('http://192.168.0.21:3000/idcheck', formCheckId)
+            axios.post(props.serverURL+'/idcheck', formCheckId)
                 .then(response => {
                     console.log('데이터 전송 성공:', response);
                     idCheckResult = response.data.result

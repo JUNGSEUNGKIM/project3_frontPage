@@ -35,10 +35,10 @@ function Personalized(props) {
 
     const { data: festivals, isLoading, isError } = useQuery(
         ['getFestivalInfo'],
-        () => axios.get('http://localhost:5000/festivals', { params: { loc:'전라남도'} })
+        () => axios.get(props.apiUrl+'/festivals', { params: { loc:'전라남도'} })
             .then(response => response.data)
     );
-    // console.log("festivals:::::::::",festivals)
+    console.log("festivals:::::::::",festivals)
 
     // 각 버튼에 대한 박스 내용을 배열로 저장합니다.
     const boxContentsByButton = {

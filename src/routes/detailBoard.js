@@ -19,12 +19,14 @@ function DetailBoard(props) {
     const navigate = useNavigate();
     const [resultQue,setResultQue]=useState({});
     const [trueResult, setTrueResult] = useState(false)
+    const [boardLike,setBoardLike] = useState(1)
 
     const {code} = useParams()
 
     const fetchData = async () => {
-        const result = await axios.get(props.serverURL+'/boarddetail/'+code,{params:{user_id:props.loginId}}, { withCredentials: true });
+        const result = await axios.get(props.serverURL+'/svboarddetail/'+code,{params:{user_id:props.loginId}}, { withCredentials: true });
         setResultQue(result.data);
+        setBoardLike(result.data.board.likes)
         resultQue ? setTrueResult(true) : setTrueResult(false)
         console.log(result.data)
         scrollToTop();
@@ -91,6 +93,9 @@ function DetailBoard(props) {
     };
 
 
+
+
+
     return (
         <div className="main-page-content">
 
@@ -110,6 +115,7 @@ function DetailBoard(props) {
 
             <div id="about">
                 <div className="about-content">
+
                     <div className="love-grid text-center">
                         <div className="container">
                             <div className="row">
@@ -126,6 +132,7 @@ function DetailBoard(props) {
                                                             {upDateTX ?
                                                                 resultQue.board.title
 
+
                                                                 : <input type="text" onChange={(e)=>{setUpTitle(e.target.value)}} value={upTitle}></input>}
 
                                                         </span>
@@ -133,7 +140,11 @@ function DetailBoard(props) {
                                                     <div style={{textAlign:"right", width:"100%", paddingRight:"10%"}}>
                                                     <h6 style={{display:"inline-block", padding:"0 0.5%" , fontSize:"1em"}} className={styles.singleWebsiteTitle}>작성자 {resultQue.board.author}</h6>
                                                     <h6 style={{display:"inline-block", padding:"0 0.5%" , fontSize:"1em"}} className={styles.singleWebsiteTitle}>조회수 {resultQue.board.views}</h6>
-                                                    <h6 style={{display:"inline-block", padding:"0 0.5%" , fontSize:"1em"}} className={styles.singleWebsiteTitle}>조항요 {resultQue.board.likes}</h6>
+                                                        {/*{setBoardLike(resultQue.board.likes)}*/}
+                                                    <h6 style={{display:"inline-block", padding:"0 0.5%" , fontSize:"1em"}} className={styles.singleWebsiteTitle}>좋아요 {boardLike}<a onClick={()=>{
+                                                        axios.get(props.serverURL+"/like/"+resultQue.board.board_code,{prams:{user_id:props.loginId}},{withCredentials:true})
+                                                        setBoardLike(prevCount => prevCount + 1);
+                                                    }}>👍</a></h6>
                                                     </div>
                                                 </div>
                                                 <div className="single-nominee__header__right">

@@ -56,7 +56,7 @@ function Festival(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/events`,
+                const response = await axios.get(props.apiUrl+`/events`,
                     { params: { loc: convertToFullRegionName(selectedZone) } });
                 setEventData(response.data);
                 // console.log("eventData:", response.data);
@@ -94,13 +94,13 @@ function Festival(props) {
 
     const { data: festivals, isLoading, isError } = useQuery(
         ['getFestivalInfo', selectedZone],
-        () => axios.get('http://localhost:5000/festivals', { params: { loc: convertToFullRegionName(selectedZone) } })
+        () => axios.get(props.apiUrl+'/festivals', { params: { loc: convertToFullRegionName(selectedZone) } })
             .then(response => response.data)
     );
 
     const { data: events } = useQuery(
         ['getEventsInfo', selectedZone],
-        () => axios.get('http://localhost:5000/events', { params: { loc: convertToFullRegionName(selectedZone) } })
+        () => axios.get(props.apiUrl+'/events', { params: { loc: convertToFullRegionName(selectedZone) } })
             .then(response => response.data)
     );
 
