@@ -4,10 +4,10 @@
     
  |  이름  | 백엔드(주요 프레임워크) | 개발환경 | DataBase | 프론트엔드 
 |--------|---------------------|-------------------------------|-----------------------------|-----------------------------|
-| 김정승 |    nodejs, Nginx, python    |    IntelliJ IDEA , vim      | oracle 11g | HTML, javascript, css, React|
-| 노가현 |    nodejs, Nginx, python    |    IntelliJ IDEA , vim      | oracle 11g | HTML, javascript, css, React|
-| 배호진 |    nodejs, Nginx, python    |    IntelliJ IDEA , vim      | oracle 11g | HTML, javascript, css, React|
-| 배은지 |    nodejs, Nginx, python    |    IntelliJ IDEA , vim      | oracle 11g | HTML, javascript, css, React|
+| 김정승 |    nodejs, Nginx, python    |    IntelliJ IDEA , vim , Pycharm     | oracle 11g | HTML, javascript, css, React|
+| 노가현 |    nodejs, Nginx, python    |    IntelliJ IDEA , vim , Pycharm     | oracle 11g | HTML, javascript, css, React|
+| 배호진 |    nodejs, Nginx, python    |    IntelliJ IDEA , vim , Pycharm     | oracle 11g | HTML, javascript, css, React|
+| 배은지 |    nodejs, Nginx, python    |    IntelliJ IDEA , vim , Pycharm     | oracle 11g | HTML, javascript, css, React|
 
 <a href="https://github.com/JUNGSEUNGKIM/codelap_allola/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=JUNGSEUNGKIM/codelap_allola" />
@@ -90,7 +90,7 @@
     + 지역별 데이터로 원하는 위치에 따른 데이터 제공
 
 * 배호진 -
-    + 게시판 제작 담당
+    + 게시판 BackEnd 제작 담당
     + 데이터베이스 구성 및 제작 / 공공데이터 입력
     + 필요한 실데이터 수집 및 import
     + 여행추천 화면 구현((UI는 PC 및 모바일 기기에서 동일 한 UI유지)
