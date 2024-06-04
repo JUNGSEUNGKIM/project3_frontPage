@@ -34,7 +34,6 @@ const PJmain = (props) => {
                 const randomFestivals = pickRandomItems(festivals2024, 4);
                 const randomMarkets = pickRandomItems(marketsResponse.data, 4);
                 const randomEat_places = pickRandomItems(eatPlaceResponse.data, 4);
-                // console.log(festivals2024)
 
                 setRandomFestival(randomFestivals);
                 setRandomMarket(randomMarkets);
@@ -43,13 +42,11 @@ const PJmain = (props) => {
                 console.error('Error fetching data:', error);
             }
         };
-
-        // Fetch data initially and then every 5 seconds
         fetchData();
-        // const interval = setInterval(fetchData, 5000);
 
-        // return (() => {clearInterval(interval)})
     }, []);
+
+
     const pickRandomItems = (items, count) => {
         if (items.length === 0) return [];
         const randomItems = [];
@@ -63,8 +60,6 @@ const PJmain = (props) => {
     const handleRandomFestival = () => {
         setRandomFestival(prevState => {
             const newFestivalData = pickRandomItems(randomFestival, 4);
-            // setRandomMarket([]);
-            // setRandomEat_place([]);
             return newFestivalData;
         });
     };
@@ -72,8 +67,6 @@ const PJmain = (props) => {
     const handleRandomMarket = () => {
         setRandomMarket(prevState => {
             const newMarketData = pickRandomItems(randomMarket, 4);
-            // setRandomFestival([]);
-            // setRandomEat_place([]);
             return newMarketData;
         });
     };
@@ -81,8 +74,6 @@ const PJmain = (props) => {
     const handleRandomEatPlace = () => {
         setRandomEat_place(prevState => {
             const newEatPlaceData = pickRandomItems(randomEat_place, 4);
-            // setRandomFestival([]);
-            // setRandomMarket([]);
             return newEatPlaceData;
         });
     };
@@ -106,7 +97,6 @@ const PJmain = (props) => {
     const items = [
 
     ];
-    // let [itemNumber,setItemNumber] = useState(0);
 
     for(var i =0; i < 1; i++){
         // items.push( { id: i, url: 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=82d75629-ca89-4d4d-85b9-5e8dae133e20&mode=raw',main:'소희왕자 진자 멋있다',text:'특별한 체험이 있는 서울 고궁 야간개장',text1:'자세히 보기' })
@@ -127,7 +117,6 @@ const PJmain = (props) => {
     }
 
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [progress, setProgress] = useState(100);
     const intervalRef = useRef();
 
 
@@ -361,14 +350,6 @@ const PJmain = (props) => {
             <div className={styles.banner_good}></div>
             <div className={styles.btnAuto}>
             </div>
-            {/*<div className={styles.best}>*/}
-            {/*    <div className={styles.best_box}>*/}
-            {/*        여기에 인기글 넣을거지*/}
-            {/*    </div>*/}
-            {/*    <div className={styles.best_box}>*/}
-            {/*        여기에 날씨 넣을꺼지*/}
-            {/*    </div>*/}
-            {/*</div>*/}
 
             {/* <!-- ================================ 추천 / 날씨 =============================== --> */}
 
@@ -463,8 +444,7 @@ const PJmain = (props) => {
 
             </div>
 
-            {/* <!-- ================================ 추천 / 날씨 =============================== --> */}
-
+            {/* <!-- ================================ 랜덤 추천 =============================== --> */}
 
             <div style={{paddingBottom: "20px"}} className={styles.popular}>
                 <div className={styles.navigation_bar}>
