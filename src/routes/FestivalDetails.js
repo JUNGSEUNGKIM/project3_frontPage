@@ -41,7 +41,7 @@ function FestivalDetails(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(props.apiUrl+`festivals`, {
+                const response = await axios.get(props.apiUrl+`/festivals`, {
                     params: { festival_id: FestivalID }
                 });
                 setFestivalData(response.data);
@@ -224,7 +224,7 @@ function FestivalDetails(props) {
 
                             </div>
                             <div className={styles.details_festival_img}>
-                                <img src={props.imgURL+"/"+festivalData[0].ImageName.split(";")[0]}/>
+                                <img style={{width:"100%", height:"100%"}} src={festivalData[0].ImageName===null?"a":festivalData[0].ImageName.split(";")[0].split(":")[0]==="https"?festivalData[0].ImageName.split(";")[0]:props.imgURL+"/"+festivalData[0].ImageName.split(";")[0]}/>
                             </div>
                         </div>
                     </div>

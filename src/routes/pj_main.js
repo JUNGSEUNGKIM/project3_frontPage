@@ -113,7 +113,11 @@ const PJmain = (props) => {
     }
     for(var i= 0; i < j ; i++){
         console.log(items)
-        items.push({id:randomFestival[i].FESTIVALID, url:props.imgURL+"/"+randomFestival[i].IMAGE_NAME.split(";")[0],main:randomFestival[i].LOCATION,text:randomFestival[i].FESTIVALNAME,text1:'자세히 보기'})
+        if(randomFestival[i].IMAGE_NAME === null){
+            randomFestival[i].IMAGE_NAME = 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=82d75629-ca89-4d4d-85b9-5e8dae133e20&mode=raw';
+        }
+        items.push({id:randomFestival[i].FESTIVALID, url:randomFestival[i].IMAGE_NAME.split(";")[0].split(":")[0]==="https"?randomFestival[i].IMAGE_NAME.split(";")[0]:props.imgURL+"/"+randomFestival[i].IMAGE_NAME.split(";")[0],main:randomFestival[i].LOCATION,text:randomFestival[i].FESTIVALNAME,text1:'자세히 보기'})
+        // items.push({id:randomFestival[i].FESTIVALID, url:props.imgURL+"/"+randomFestival[i].IMAGE_NAME.split(";")[0],main:randomFestival[i].LOCATION,text:randomFestival[i].FESTIVALNAME,text1:'자세히 보기'})
     }
 
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -485,9 +489,10 @@ const PJmain = (props) => {
                              onClick={() => navigate("/festivaldetails/" + festival.FESTIVALID)}>
 
                             <img
-                                src={festival.IMAGE_NAME && festival.IMAGE_NAME.split(";").length > 0 ? props.imgURL + "/" + festival.IMAGE_NAME.split(";")[0] : defaultImageUrl}
-                                alt="축제
-                                이미지" className={styles.festival_image}/>
+                                src={festival.IMAGE_NAME && festival.IMAGE_NAME.split(";").length > 0 ? festival.IMAGE_NAME.split(";")[0].split(":")[0]==="https" ?festival.IMAGE_NAME.split(";")[0]:props.imgURL + "/" + festival.IMAGE_NAME.split(";")[0] : defaultImageUrl}
+                                // src={festival.IMAGE_NAME && festival.IMAGE_NAME.split(";").length > 0 ? props.imgURL + "/" + festival.IMAGE_NAME.split(";")[0] : defaultImageUrl}
+                                alt={festival.IMAGE_NAME.split(";")[0].split(":")[0]}
+                                style={{width:"100%", height:"100%"}}/>
                             <div className={styles.festival_info}>
                                 <p className={styles.festival_name}>{festival.FESTIVALNAME}</p>
                                 <div className={styles.mobileOnlyDetails}>

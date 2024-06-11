@@ -66,13 +66,14 @@ function DetailBoard(props) {
     }
 
     const updateAxios = (board_code) => {
-        const response = axios.post(props.serverURL+"/boardedit",{
+        const response = axios.post(props.serverURL+"/svboardedit",{
             boarder_code : resultQue.board.board_code,
             title : upTitle,
             content : upText,
             user_id:props.loginId
         },{withCredentials:true})
         fetchData();
+        console.log(response,":::::::::::::::업데이트 에러?")
         if(response){setUpDateTX(true); fetchData();}else{alert("다시 입력해 주세요")}
     }
     const [editCot, setEditCot] = useState({});
@@ -352,7 +353,7 @@ function DetailBoard(props) {
 
 
                                                 <a  className="button" onClick={()=>{
-                                                    axios.get(props.serverURL+"/boarddelete/"+resultQue.board.board_code, {withCredentials:true})
+                                                    axios.get(props.serverURL+"/svboarddelete/"+resultQue.board.board_code, {withCredentials:true})
                                                         .then((resDe) => {
                                                             // 응답 데이터에 접근하여 삭제 결과 확인
                                                             const deleteResult = resDe.data.result;
@@ -413,7 +414,7 @@ function DetailBoard(props) {
     )
     function editCommentUp(code){
         try{
-            axios.post(props.serverURL+'/editcomment/'+code,{boarder_code:resultQue.board.boarder_code,content:commentTexts[code],user_id:props.loginId},{withCredentials:true})
+            axios.post(props.serverURL+'/sveditcomment/'+code,{boarder_code:resultQue.board.boarder_code,content:commentTexts[code],user_id:props.loginId},{withCredentials:true})
                 .then((res)=>{
                     if (res.data.result) {
                         alert("수정완료");
@@ -431,7 +432,7 @@ function DetailBoard(props) {
     }
     function deleteComment(code){
         try{
-            axios.post(props.serverURL+'/deletecomment/'+code,{boarder_code:resultQue.board.boarder_code},{withCredentials:true})
+            axios.post(props.serverURL+'/svdeletecomment/'+code,{boarder_code:resultQue.board.boarder_code},{withCredentials:true})
                 .then((res)=>{
                     if (res.data.result) {
                         alert("삭제완료");
@@ -455,7 +456,7 @@ function DetailBoard(props) {
             }else{
                 text = commentTexts[comment_id]
             }
-            axios.post(props.serverURL+'/addcomment',{
+            axios.post(props.serverURL+'/svaddcomment',{
                 content:text,
                 user_id:resultQue.user_id,
                 boarder_code:resultQue.board.board_code,

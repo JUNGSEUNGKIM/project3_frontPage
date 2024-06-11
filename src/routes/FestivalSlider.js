@@ -155,7 +155,7 @@ const FestivalSlider = ( myProp ) => {
                                 >
                                     <ImageContainer>
 
-                                        <Image src={myProp.imgURL+"/"+festival.ImageName.split(";")[0]}/>
+                                        <Image src={festival.ImageName===null?'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=82d75629-ca89-4d4d-85b9-5e8dae133e20&mode=raw':festival.ImageName.split(";")[0].split(":")[0]==="https"?festival.ImageName.split(";")[0]:myProp.imgURL+"/"+festival.ImageName.split(";")[0]}/>
                                             <InfoOverlay show={hoveredFestivalId  === festival.FestivalID}>
                                                 <InfoText>
                                                     {/*{overlayContent.zone}*/}

@@ -10,7 +10,7 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 const marketItemsPerPage = window.innerWidth <= 768 ? 1 : 3;
 const restaurantItemsPerPage =window.innerWidth <= 768 ? 1 : 3;
 
-function EventDetails() {
+function EventDetails(props) {
 
     const { EVENTID}  = useParams();
     const [eventData, setEventData] = useState([]);
@@ -42,7 +42,7 @@ function EventDetails() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/events`, {
+                const response = await axios.get(props.apiUrl+`/events`, {
                     params: {
                         EVENTID: EVENTID
                     }
@@ -65,7 +65,7 @@ function EventDetails() {
     useEffect(() => {
         const fetchGarageData = async () => {
             try {
-                const garageDataResponse = await axios.get(`http://localhost:5000/garage_data`, {
+                const garageDataResponse = await axios.get(props.apiUrl+`/garage_data`, {
                     params: {
                         id: EVENTID
                     }

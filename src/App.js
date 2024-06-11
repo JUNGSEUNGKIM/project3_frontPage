@@ -44,15 +44,18 @@ function App() {
 
     const [showChat, setShowChat] = useState(false);
     const [fullScreen, setFullScreen] = useState(false);
-    const [serverURL, setServerURL] = useState('http://192.168.0.23:3000');
-    const [imgURL, setImgURL] = useState('http://192.168.0.23:3000/uploads')
     // const [serverURL, setServerURL] = useState('http://192.168.0.23:3000');
-    const [apiURL, setApiURL] = useState('http://localhost:5000');
     // const [imgURL, setImgURL] = useState('http://192.168.0.23:3000/uploads')
-    // const [serverURL, setServerURL] = useState('http://3.143.252.195:3000');
-    // const [apiURL, setApiURL] = useState('http://3.143.252.195:5000');
-    // const [imgURL, setImgURL] = useState('http://3.143.252.195:3000/uploads')
-
+    // const [serverURL, setServerURL] = useState('http://192.168.0.23:3000');
+    // const [apiURL, setApiURL] = useState('http://localhost:5000');
+    // const [imgURL, setImgURL] = useState('http://192.168.0.23:3000/uploads')
+    const [serverURL, setServerURL] = useState('http://3.143.252.195:3000');
+    const [apiURL, setApiURL] = useState('http://3.143.252.195:5000');
+    const [imgURL, setImgURL] = useState('http://3.143.252.195:3000/uploads')
+    // const [serverURL, setServerURL] = useState('http://localhost:3000');
+    // const [apiURL, setApiURL] = useState('http://localhost:5000');
+    // const [imgURL, setImgURL] = useState('http://localhost:3000/uploads')
+    // const [imgURL, setImgURL] = useState('')
     const toggleChat = () => {
         setShowChat(!showChat);
     };
