@@ -27,7 +27,7 @@ function Borader(props){
             const result = await axios.get(props.serverURL+'/svboardmain'+params,{params:{user_id:props.loginId}}, { withCredentials: true });
             setResultQue(result.data);
             resultQue ? setTrueResult(true) : setTrueResult(false)
-            console.log(result.data)
+            // console.log(result.data)
             scrollToTop();
         };
 
@@ -35,6 +35,34 @@ function Borader(props){
 
         // console.log(resultQue)
     }, [params,setResultQue]);
+
+    const fetchData1 = async () => {
+        console.log(":::::::::Spring server")
+        const result = await axios.get('http://localhost:8081/items', { withCredentials: true });
+        console.log(":::::::::Spring server DATA ",result.data)
+        // resultQue ? setTrueResult(true) : setTrueResult(false)
+        // console.log(result.data)
+        scrollToTop();
+    };
+    fetchData1();
+
+    // const { createProxyMiddleware } = require("http-proxy-middleware");
+    //
+    // module.exports = function (app) {
+    //     app.use(
+    //         "/items",
+    //         createProxyMiddleware({
+    //             target: "http://localhost:8081",
+    //             changeOrigin: true,
+    //         })
+    //     );
+    //     console.log("프록시 설정이 작동되었습니다.");
+    // };
+
+
+
+
+
 
     useEffect(() => {
         console.log(resultQue); // resultQue가 업데이트될 때마다 실행됨
