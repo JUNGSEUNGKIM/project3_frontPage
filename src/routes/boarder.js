@@ -36,15 +36,7 @@ function Borader(props){
         // console.log(resultQue)
     }, [params,setResultQue]);
 
-    const fetchData1 = async () => {
-        console.log(":::::::::Spring server")
-        const result = await axios.get('http://localhost:8081/items', { withCredentials: true });
-        console.log(":::::::::Spring server DATA ",result.data)
-        // resultQue ? setTrueResult(true) : setTrueResult(false)
-        // console.log(result.data)
-        scrollToTop();
-    };
-    fetchData1();
+
 
     // const { createProxyMiddleware } = require("http-proxy-middleware");
     //
